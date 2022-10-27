@@ -1,0 +1,5 @@
+sample_name,marker,label,file_name,thresholding
+S1,LMX,LMX,/home/ernohanninen/ResearchProject/App/run/raw_tiff/lmx_patch1.tif,Triangle
+S1,TH,TH,/home/ernohanninen/ResearchProject/App/run/raw_tiff/patch1.tif,Triangle
+S2,LMX,LMX,/home/ernohanninen/ResearchProject/App/run/raw_tiff/lmx_patch2.tif,Triangle
+S2,TH,TH,/home/ernohanninen/ResearchProject/App/run/raw_tiff/patch9.tif,Triangle

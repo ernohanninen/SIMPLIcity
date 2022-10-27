@@ -1,0 +1,46 @@
+.navbar {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #6576ce;
+  }
+  
+  .navbar > .nav-logo {
+    font-weight: 700;
+    font-size: 21px;
+    margin: 15px;
+    color: #ffffff;
+  }
+  
+  .navbar > .nav-links > a {
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+    margin: 15px;
+    position: relative;
+    opacity: 0.9;
+  }
+  
+  .navbar > .nav-links > a:hover {
+    opacity: 1;
+  }
+  
+  .navbar > .nav-links > a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+  }
+  
+  .navbar > .nav-links > a:hover::before {
+    width: 100%;
+  }
+  
+  .navbar > .nav-toggle {
+    display: none;
+  }
+  

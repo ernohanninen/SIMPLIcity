@@ -1,0 +1,201 @@
+form {
+  padding-top: 20px;
+  max-width: 600px;
+  margin: auto;
+  position: relative;
+
+}
+
+.settingsForm {
+  padding-top: 20px;
+  max-width: 280px;
+  margin: auto;
+}
+
+.metadataForm{
+  padding-top: 20px;
+  max-width: 350px;
+  margin: auto;
+  
+}
+
+.errorMessage{
+  color:red
+}
+
+
+.wrapper {
+  padding: 5px 20px;
+}
+
+.wrapper fieldset {
+  margin: 20px 0;
+}
+
+.row {
+  display: flex;
+  max-width: 600px;
+  margin: auto;
+  white-space: nowrap;
+}
+
+.buttonRow {
+  display: flex;
+  max-width: 500px;
+  margin: auto;
+  white-space: nowrap;
+}
+
+
+
+.imageRow{
+  display: flex;
+}
+
+.col-1, .col-2, .col-3,.col-4, .col-5{
+  margin:4px;
+  position: relative;
+
+}
+
+.colQC-1, .colQC-2, .colQC-3{
+  margin:0px;
+  padding-right :10px;
+  
+  position: inline;
+
+}
+
+.textarea-container{
+  border: 2px solid;
+  top: 25px
+}
+
+
+.checkbox { 
+  margin:4px;
+  display: flex;
+
+}
+
+.dropbox { 
+  margin:4px;
+  display: flex;
+
+}
+
+.col-remove{
+  position:relative;
+  top:54px
+}
+
+.next-btn {
+  position: relative;
+  left: 380px;
+}
+
+.next-btn1{
+  position: relative;
+  left: 455px;
+}
+
+
+
+.return-btn {
+  position: relative;
+  left: 75px;
+}
+
+.return-btn2 {
+  position: relative;
+  left: 35px;
+}
+
+.run-btn {
+  position: relative;
+  left: 380px;
+}
+
+.btn-instructions{
+  position: relative;
+  margin:4px;
+  
+}
+
+
+.textarea-container {
+  margin:4px;
+  position: relative;
+  margin-bottom: 50px;
+
+}
+.textarea-container textarea {
+  width: 520px;
+  
+  height: 100%;
+  box-sizing: border-box;
+  resize: none;
+}
+
+img {
+  width: 150%;
+  height: 150%;
+
+  
+}
+
+#sampleSelector, #pixelSampleSelector {
+  margin:10px;
+  max-width: 120px;
+  height: 30px;
+}
+
+#markerSelector {
+  margin:10px;
+  max-width: 120px;
+  height: 30px;
+}
+
+#colorSelector, #marker, #thresholdingDropMenu, #instrumentDropMenu {
+  max-width: 120px;
+  height: 22px;
+}
+
+.contain {
+  object-fit: contain;
+}
+
+.resultsForm{
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 10px;
+  right: 120px;
+  
+
+}
+.segmentationSettings{
+  white-space: nowrap;
+  max-width: 120px;
+  height: 30px;
+}
+
+/*html {
+  overflow-y: scroll;
+}*/
+
+.imageColumn {
+  float: left;
+  width: 21.33%;
+  margin-right: 10.5%;
+  margin-left: 1.1%;
+}
+
+/* Clearfix (clear floats) */
+.imageRow1::after {
+  content: "";
+  clear: both;
+  display: table;
+  
+  
+}
