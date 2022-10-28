@@ -11,7 +11,7 @@ The changes contains some external function calls and changed parameters
 
 nextflow.enable.dsl=2
 
-script_folder = "$baseDir/scripts"
+script_folder = "$baseDir/run/scripts"
 
 include {convert_metadata_to_cp4} from "$script_folder/workflows.nf"
 

@@ -1,0 +1,4 @@
+2022-10-28 09:28:40	7.4s	scruffy_sinoussi	ERR	6f11168a88e2a15a2b878c87c4c0787b	f6129238-dc8a-4616-8604-4d05c267cf88	nextflow main.nf -c ../App/run/run_simpli.config
+2022-10-28 09:31:46	9.3s	angry_visvesvaraya	ERR	6f11168a88e2a15a2b878c87c4c0787b	be1e7884-906e-4449-905b-dc8a795d8f69	nextflow main.nf -c ../App/run/run_simpli.config
+2022-10-28 09:34:12	10.6s	reverent_woese	ERR	6f11168a88e2a15a2b878c87c4c0787b	d1252d67-9a8c-4988-9815-087bb25e9e07	nextflow main.nf -c ../App/run/run_simpli.config
+2022-10-28 09:36:05	12.1s	pensive_nobel	ERR	6f11168a88e2a15a2b878c87c4c0787b	0e6660e6-4f7c-4847-8570-fbe23dccdbf8	nextflow main.nf -c ../App/run/run_simpli.config

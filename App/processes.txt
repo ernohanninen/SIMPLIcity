@@ -2,8 +2,8 @@ instrument:operetta
 execute_area:false
 execute_sd_segmentation:true
 execute_cell_type_identification:true
-execute_intensity:true
-execute_measure_cell_areas:true
+execute_intensity:false
+execute_measure_cell_areas:false
 execute_cell_clustering:false
 execute_cell_thresholding:false
 execute_homotypic_interactions:false

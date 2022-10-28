@@ -424,7 +424,6 @@ def writeMetadata():
                     metadata.append(list(elem.values())[0]) #Storing the metadata to list
                 
                 masking_file.write(metadata[0]+","+metadata[1]+","+metadata[2]+","+metadata[3]+"\n") #Write to file
-                
     #Checks that the thresholds_dict is not empty    
     if all(d for d in thresholds_dict)==True:
         with open("run/run_simpli.config", "a") as config_file:
@@ -434,15 +433,16 @@ def writeMetadata():
                     if value == "HuNu":
                         config_file.write('params.sd_labels_to_segment = "HuNu"\n')
                         config_file.write('params.sd_model_name = "HuNu_segment"\n')             
-                        config_file.write('params.sd_model_path = "$projectDir/../App/run/models"\n')
+                        config_file.write('params.sd_model_path = "/opt/models/"\n')
                     elif value == "2D_versatile_fluo":
                         config_file.write('params.sd_labels_to_segment = "TH"\n')
                         config_file.write('params.sd_model_name = "2D_versatile_fluo"\n')             
                         config_file.write('params.sd_model_path = "default"\n')
                     elif value == "LMX":
+                        
                         config_file.write('params.sd_labels_to_segment = "TH,LMX"\n')
                         config_file.write('params.sd_model_name = "lmx_transfer_7"\n')             
-                        config_file.write('params.sd_model_path = "$projectDir/../App/run/models"\n')
+                        config_file.write('params.sd_model_path = "/opt/models/"\n')
                         
                 elif key == "probThreshold":        
                     config_file.write(f'params.sd_prob_thresh = "{value}"\n')
@@ -465,7 +465,7 @@ def runPipeline():
     
     print("RUN")
     if os.path.isdir("output"):shutil.rmtree("output") 
-    if os.path.isdir("work"):shutil.rmdir("work")
+    #if os.path.isdir("work"):shutil.rmtree("work")
     #Remove files from src/images subdirectories
     dir_list = ["Preprocessed", "Thresholded", "Area", "Overlays", "StarDist_Segmentation", "Intensity", "Cell_Area_Measurements"]
     for dir_name in dir_list: #Looping thru the subdirectories
