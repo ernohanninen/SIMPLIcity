@@ -25,24 +25,24 @@ conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkze
 cd simpli_project/App
 ```
 
-6. You should have docker installed in your computer. The code will automatically pull the docker images from docker hub
+4. You should have docker installed in your computer. The code will automatically pull the docker images from docker hub
 
 
 Until now you should have the app cloned from GitHub and on active APPenv environment
 
-7. Now we can start the app. Run flask (takes care of the communication between frontend and backend):
+5. Now we can start the app. Run flask (takes care of the communication between frontend and backend):
 ```
 flask run
 ```
 
-8. Open a new terminal window (let the flask run on it's terminal own window)
+6. Open a new terminal window (let the flask run on it's terminal own window)
 
-9. You should be in /researchproject/App folder, if not navigate there. Activate conda environment on new window: 
+7. You should be in /simpli_project/App folder, if not navigate there. Activate conda environment on new window: 
 ```
 conda activate APPenv
 ```
 
-10. Run yarn (starts the react app). 
+8. Run yarn (starts the react app). 
 ```
 yarn start
 ```
