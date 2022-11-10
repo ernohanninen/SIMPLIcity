@@ -21,7 +21,8 @@ conda create --name APPenv
 ```
 And:
 ```
-conda install nodejs yarn python-dotenv flask https://anaconda.org/conda-forge/flask-restful/0.3.9/download/noarch/flask-restful-0.3.9-pyhd8ed1ab_0.tar.bz2 werkzeug pillow scikit-image numpy opencv
+conda install nodejs yarn python-dotenv flask werkzeug pillow scikit-image numpy opencv flask-restful=0.3.9
+
 ```
 
 4. When you have the environment activate it
