@@ -527,7 +527,7 @@ const GetMetadata = forwardRef((props, ref)=>{
         let selectedModel = event.target.value
         setModel(selectedModel)
         if(selectedModel === "HuNu"){
-            setProbThreshold("0.55")
+            setProbThreshold("0.58")
             setOverlapThreshold("0.3")
         }
         else if(selectedModel === "TH"){
