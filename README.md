@@ -72,7 +72,7 @@ You should now find the app from browser by typing: http://localhost:3000/
 4. Select the source of images: Operetta
 5. Select following processes: Segmentation, identification, cell intensity (cell area measurements is still on progress so don't run this)
 6. Click next
-7. Select LMX model, set the probability threshold to 0.25
+7. Select LMX model
 8. Fill the cell type identification: 
    - Some of the colours don't work, so use green, blue, red or yellow 
 For example:
