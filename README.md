@@ -13,21 +13,26 @@ cd simpli_project/Conda
 ```
 conda env create -f APPenv.yml
 ```
+
+When you have the environment activate it
+```
+conda activate APPenv
+```
+
 IN CASE OF ERROR IN THE CONDA ENV
 If you get an error when building the yml file, you can also try to build the environment from scratch
 Run:
 ```
 conda create --name APPenv
 ```
-And:
+Activate:
+```
+conda activate APPenv
+```
+Install packages
 ```
 conda install nodejs yarn python-dotenv flask werkzeug pillow scikit-image numpy opencv flask-restful=0.3.9
 
-```
-
-4. When you have the environment activate it
-```
-conda activate APPenv
 ```
 
 5. Navigate to the App folder
