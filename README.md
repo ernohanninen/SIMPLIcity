@@ -4,12 +4,7 @@
 git clone git@github.com:ernohanninen/simpli_project.git
 ```
 
-2. Navigate to Conda folder
-```
-cd simpli_project/Conda
-```
-
-3. Create the conda env
+2. Create the conda env
 Run:
 ```
 conda create --name APPenv
@@ -25,9 +20,9 @@ conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkze
 
 ```
 
-5. Navigate to the App folder
+3. Navigate to the App folder
 ```
-cd ../App
+cd simpli_project/App
 ```
 
 6. You should have docker installed in your computer. The code will automatically pull the docker images from docker hub
