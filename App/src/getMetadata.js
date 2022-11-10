@@ -515,7 +515,7 @@ const GetMetadata = forwardRef((props, ref)=>{
                 <option value="HuNu">HuNu_model</option>
                 <option value="TH">TH_model</option>
                 <option value="ChAT">ChAT_model</option>
-                <option value="LMX">LMX_model</option>
+                <option value="LMX">LMX_TH_model</option>
                 <option value="2D_versatile_fluo">2D_versatile_fluo</option>
             </select> 
         </div>)
@@ -527,7 +527,7 @@ const GetMetadata = forwardRef((props, ref)=>{
         let selectedModel = event.target.value
         setModel(selectedModel)
         if(selectedModel === "HuNu"){
-            setProbThreshold("0.6")
+            setProbThreshold("0.55")
             setOverlapThreshold("0.3")
         }
         else if(selectedModel === "TH"){
@@ -539,7 +539,7 @@ const GetMetadata = forwardRef((props, ref)=>{
             setOverlapThreshold("0.4")
         }
         else if(selectedModel === "LMX"){
-            setProbThreshold("0.6")
+            setProbThreshold("0.20")
             setOverlapThreshold("0.15")
         }
         else if(selectedModel === "2D_versatile_fluo"){
