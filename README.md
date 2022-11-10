@@ -47,13 +47,14 @@ flask run
 conda activate APPenv
 ```
 
-10. Run yarn (starts the react app)
+10. Run yarn (starts the react app). 
 ```
 yarn start
 ```
 
 
 You should now find the app from browser by typing: http://localhost:3000/
+
 
 
 1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
