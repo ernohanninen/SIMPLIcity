@@ -31,7 +31,7 @@ conda activate APPenv
 ```
 Install packages
 ```
-conda install nodejs yarn python-dotenv flask werkzeug pillow scikit-image numpy opencv flask-restful=0.3.9
+conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkzeug=2.1.1 pillow=9.0.1 scikit-image=0.12.9 numpy= 1.20.3 opencv=4.5.2 flask-restful=0.3.9
 
 ```
 
