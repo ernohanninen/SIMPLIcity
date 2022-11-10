@@ -265,6 +265,10 @@ workflow {
                 preprocessed_images = preprocess_operetta_images.out.preprocessed_tiff_images.collect()
                 visualize_cell_intensity(cell_overlays, preprocessed_images, params.sample_metadata_file, params.cell_masking_metadata, params.cell_type_for_intensity)
             }
+            if(!params.skip_intensity_visualization && !params.instrument_operetta){      
+                preprocessed_images = preprocess_images.out.preprocessed_tiff_images.collect()
+                visualize_cell_intensity(cell_overlays, preprocessed_images, params.sample_metadata_file, params.cell_masking_metadata, params.cell_type_for_intensity)
+            }
         }
 
         if(!params.skip_cluster_visualization){
@@ -353,7 +357,7 @@ workflow {
         //Measure pixel areas for segmented cell types
         if(!params.skip_cell_area_measurements){
             //annotated_cell_data = identify_cell_types_mask.out.annotated_cell_data
-            cell_area_measurements(annotated_cell_data, cell_overlays_unassigned_removed, params.cell_masking_metadata, params.cell_type_to_measure_area)
+            cell_area_measurements(cell_masks, cell_overlays_unassigned_removed, params.cell_masking_metadata, params.cell_type_to_measure_area, params.co_expression_fraction)
         }  
     }
 

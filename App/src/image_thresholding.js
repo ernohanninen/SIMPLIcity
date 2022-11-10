@@ -30,14 +30,17 @@ export default function Thresholding()  {
                     let sau_thresh = response.data["sau_thresh"]
                     let yen_thresh  =response.data["yen_thresh"]
                     let li_thresh = response.data["li_thresh"]
+                    let triangle_thresh = response.data["triangle_thresh"]
+                    let isodata_thresh  =response.data["isodata_thresh"]
+                    let mean_thresh = response.data["mean_thresh"]
 
-                    displayImages(original_img, min_thresh, otsu_thresh, sau_thresh, yen_thresh, li_thresh) //Calling function which displays the images     
+                    displayImages(original_img, min_thresh, otsu_thresh, sau_thresh, yen_thresh, li_thresh, triangle_thresh, isodata_thresh, mean_thresh) //Calling function which displays the images     
                     
                     document.getElementById("running").style.display = "none"
                 }
         });      
 
-        const displayImages = (original_img, min_thresh, otsu_thresh, sau_thresh, yen_thresh, li_thresh) => { 
+        const displayImages = (original_img, min_thresh, otsu_thresh, sau_thresh, yen_thresh, li_thresh, triangle_thresh, isodata_thresh, mean_thresh) => { 
             
             console.log(original_img)
             console.log("../src/images/" + original_img)
@@ -45,6 +48,7 @@ export default function Thresholding()  {
             console.log("../src/images/" + otsu_thresh)
             console.log("../src/images/" + sau_thresh)
             console.log("../src/images/" + yen_thresh)
+            
 
             //src/images/test_thresholding/original_image.png
             //Map samples and set the images to variable
@@ -76,6 +80,21 @@ export default function Thresholding()  {
                         <div class="imageColumn">
                             <p>Li:</p>
                             <img class="contain" id = "li" src={require("../src/images/test_thresholding/" + li_thresh)} onClick= {event => displayFullScreen("li")}></img>
+                        </div>
+                    </div> 
+
+                    <div class="imageRow1">          
+                        <div class="imageColumn">
+                            <p>Triangle:</p>
+                            <img class="contain" id = "tri" src={require("../src/images/test_thresholding/" + triangle_thresh)} onClick= {event => displayFullScreen("tri")}></img>
+                        </div>
+                        <div class="imageColumn">
+                            <p>Isodata:</p>
+                            <img class="contain" id = "iso" src={require("../src/images/test_thresholding/" + isodata_thresh)} onClick= {event => displayFullScreen("iso")}></img>
+                        </div>
+                        <div class="imageColumn">
+                            <p>Mean:</p>
+                            <img class="contain" id = "mean" src={require("../src/images/test_thresholding/" + mean_thresh)} onClick= {event => displayFullScreen("mean")}></img>
                         </div>
                     </div> 
                     

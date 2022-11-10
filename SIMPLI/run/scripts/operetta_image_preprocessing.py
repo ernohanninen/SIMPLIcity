@@ -32,11 +32,15 @@ from skimage.util import img_as_uint
 from skimage import morphology
 
 
+
 from skimage.filters import threshold_minimum
 from skimage.filters import threshold_otsu
 from skimage.filters import threshold_sauvola
 from skimage.filters import threshold_yen
 from skimage.filters import threshold_triangle
+from skimage.filters import threshold_isodata
+from skimage.filters import threshold_mean
+from skimage.filters import threshold_li
 
 def get_arguments():
     parser = argparse.ArgumentParser(description = "Performs image preprocessing")
@@ -107,25 +111,38 @@ def preprocess_image(metadata, thresholding):
                 thresholding = thresholding.lower()
                 print(thresholding)
                 #Read the image 
-                if thresholding == "Minimum":
+                if thresholding == "minimum":
                     thresholded = threshold_minimum(image)
                     thresholded_image = image > thresholded
                 
-                elif thresholding == "Yen":
+                elif thresholding == "yen":
                     thresholded = threshold_yen(image)
                     thresholded_image = image > thresholded
                     
-                elif thresholding == "Otsu":
+                elif thresholding == "otsu":
                     thresholded = threshold_otsu(image)
                     thresholded_image = image > thresholded
                 
-                elif thresholding == "Sauvola":
+                elif thresholding == "sauvola":
                     thresholded = threshold_sauvola(image)
                     thresholded_image = image > thresholded
                     
                 elif thresholding == "triangle":
                     thresholded = threshold_triangle(image)#Thresholding 
-                    thresholded_image = image > thresholded    
+                    thresholded_image = image > thresholded  
+                    
+                elif thresholding == "li":
+                    thresholded = threshold_li(image)
+                    thresholded_image = image > thresholded 
+                    
+                elif thresholding == "mean":
+                    thresholded = threshold_mean(image)
+                    thresholded_image = image > thresholded
+                    
+                elif thresholding == "isodata":
+                    thresholded = threshold_isodata(image)
+                    thresholded_image = image > thresholded
+                
                 
                 processed = morphology.remove_small_objects(thresholded_image, 4 ** 3)
                 

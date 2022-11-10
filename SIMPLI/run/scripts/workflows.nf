@@ -332,13 +332,14 @@ workflow visualize_permuted_interactions{
 //Workflow for area measurements
 workflow cell_area_measurements{
     take: 
-        annotated_cell_data
+        cell_masks
         cell_overlay_tiff
         cell_masking_metadata
         cell_types
+        co_expression_fraction
 
     main:
-        compute_cell_area(annotated_cell_data, cell_overlay_tiff, cell_masking_metadata, cell_types)
+        compute_cell_area(cell_masks, cell_overlay_tiff, cell_masking_metadata, cell_types, co_expression_fraction)
     emit:
         cell_areas = compute_cell_area.out.measurements_of_cell_overlays
 }

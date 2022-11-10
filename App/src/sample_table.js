@@ -5,7 +5,7 @@ const Table = (({tableData, setTableData}) => {
 
     const deleteRow = (index, e) =>{
         let sampleDel = tableData[index]["sample"]
-        console.log(sampleDel)
+        //console.log(sampleDel)
         //Delete the sample from the table
         setTableData(tableData.filter((v, i) => i !== index));
 
@@ -40,8 +40,8 @@ const Table = (({tableData, setTableData}) => {
             <tbody>
             {
                 tableData.map((data, index)=>{
-                    console.log("_____________________________")
-                    console.log(data)
+                   // console.log("_____________________________")
+                    //console.log(data)
                     return(
                         <tr key={index}>
                             <td>{index+1}</td>

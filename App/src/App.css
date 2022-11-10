@@ -46,6 +46,10 @@ form {
   white-space: nowrap;
 }
 
+.submitSamplesDiv {
+  display: flex;
+  justify-content: space-between;
+}
 
 
 .imageRow{
@@ -76,6 +80,13 @@ form {
   margin:4px;
   display: flex;
 
+}
+
+.checkboxDefault{
+    margin-top: -15px;
+    display: flex;
+    margin-right: 0px;
+  
 }
 
 .dropbox { 

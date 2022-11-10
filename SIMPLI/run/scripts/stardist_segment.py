@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+print("__________________________________________________________")
 
 import sys
 import os
@@ -14,52 +15,16 @@ from skimage import io
 
 from functools import partial
 from csbdeep.utils import normalize
+print("__________________________________________________________")
+
 
 from stardist import random_label_cmap, _draw_polygons, export_imagej_rois
 from stardist.models import StarDist2D
 
-"""cell_overlays <- lapply(sample_names, function(sample){
-	
-	for(i in 1:length(names(color_list))){
-		j <- 0
-		while(TRUE){
-			j <- j + 1
-			print(markers[i])
-			print(mask_files[j])
-			if(grepl(markers[i], mask_files[j], fixed=TRUE)){
-				filename <- mask_files[j]
-				print(filename[[1]])
-				filename <- filename[[1]]
-				type <- cell_types[j]
-				#sample <- strsplit(filename,"-")
-				#sample <- unlist(sample)[1:2]
-				#sample <- paste0(sample[1],"-",sample[2]) 
-				break
-			}
-		}
-		print(filename)
-		cell_mask <- load_image(filename)
-		print(type)
-		print(sample)
-		cell_list <- c()
-		cell_list[[1]] <- Cells[sample == sample & type == type, ObjectNumber]
-		print(cell_list)
-		print(cell_mask)
-		print(color_list)
-		fillHull(cell_overlayer(0, cell_mask, cell_list, color_list))
-		break;
-	}
-})
-cell_overlays <- lapply(sample_names, function(sample){
-	cell_mask <- load_image(cell_mask_file_names[[sample]])
-	cell_list <- lapply(names(color_list), function(type){
-		Cells[Metadata_sample_name == sample & cell_type == type, ObjectNumber]
-	})	
-	cell_overlayer(0, cell_mask, cell_list, color_list)	
-})
+print("______________________!____________________________________")
 
 
-"""
+
 
 
 def get_arguments():	
@@ -76,6 +41,7 @@ def get_arguments():
 		output_table_file = Path to the output table
 		output_mask_file = Path to output the cell mask
 	"""
+	print("################################################################")
 	parser = argparse.ArgumentParser(description = "Performs 2D segmentation with stardist.")
 	parser.add_argument("sample_name", help = "name of the sample")
 	parser.add_argument("tiff_metadata_file", help = "path to the preprocessed image metadadata file")
@@ -87,8 +53,11 @@ def get_arguments():
 	parser.add_argument("output_table_file", help = "path to the file for the cell data output")
 	parser.add_argument("output_mask_file", help = "path to the file for the cell mask output")
 	args = parser.parse_args()
+	print("__________________________________________________________")
 	return args.sample_name, args.tiff_metadata_file, args.labels, args.model_name, args.model_path, \
 		args.prob_thresh, args.nms_thresh, args.output_table_file, args.output_mask_file
+  
+  
 
 def parse_labels(label):
 	"""
@@ -253,6 +222,7 @@ def write_mask(cell_mask, cell_mask_filename):
 	tifffile.imwrite(cell_mask_filename, cell_mask) #XYC
 
 if __name__ == "__main__":
+    
 	sample_name, tiff_metadata_file, label_str, model_name, model_path, \
 		prob_thresh, nms_thresh, output_table_file, output_mask_file = get_arguments()
 	print(label_str)
@@ -346,11 +316,11 @@ if __name__ == "__main__":
 			merged_file_name_tiff = sample_name + "-merged.tif"
    
 
-   
-		#merged_channels = cv2.cvtColor(merged_channels, cv2.COLOR_RGB2BGR)
-		io.imsave(merged_file_name_png_1, merged_channels)
-		cv2.imwrite(merged_file_name_png_2, merged_channels)
-		tifffile.imwrite(merged_file_name_tiff, merged_channels) #XYC
+		if len(image_metadata) > 1:
+			#merged_channels = cv2.cvtColor(merged_channels, cv2.COLOR_RGB2BGR)
+			io.imsave(merged_file_name_png_1, merged_channels)
+			cv2.imwrite(merged_file_name_png_2, merged_channels)
+			tifffile.imwrite(merged_file_name_tiff, merged_channels) #XYC
    
    
             #cv2.imwrite(os.path.join(os.getcwd(), image_name), imageClahe)

@@ -103,23 +103,37 @@ const GetSettings = forwardRef((props, ref)=>{
       <form class="settingsForm">
 
         <div class="row">
-        <label for="instrumentDropMenu">Select source of images:</label> 
+        <label for="instrumentDropMenu">Image acquisition platform:</label> 
         <select name="instrumentDropMenu" id="instrumentDropMenu" onChange={event => handleChangeSelectInstrument(event)}>
                       <option value="select" selected="true" disabled="disabled">Select</option>    
                       <option value="operetta">Operetta</option>
-                      <option value="other">Other</option>
+                      <option value="other">Brightfield</option>
                       
         </select>  
         </div>
 
         <br></br>
-        <b>Select the processes to run:</b>
+        <div class="row">
+            <div class="col-1">
+                <b>Select the processes to run:</b>
+            </div>
+            <div class="col-2">
+                <div id = "infoBtnSettings" class="btn-instructions">  
+                        <button type="button" onClick={showInstructions}>Info</button>
+                </div>  
+                <div  hidden id = "hideInfoBtnSettings" class="btn-instructions">  
+                    <button type="button" onClick={hideInstructions}>Hide Info</button>
+            </div>  
+            </div>
+        </div>
 
-            <div class="checkbox">    
+       
+            
+            {/*<div class="checkbox">   
                   <p>Area measurements: </p>
                   <input type = "checkbox" name="area" onChange={()=>setArea(!area)}/>                
 
-            </div>
+             </div>*/}
             <div class="checkbox">    
 
                   <p>Image segmentation: </p>
@@ -136,7 +150,7 @@ const GetSettings = forwardRef((props, ref)=>{
 
             <div class="checkbox">    
 
-                  <p>Cell intensity: </p>
+                  <p>Cell intensity measurements: </p>
               
                   <input type = "checkbox" name="intensity" onChange={()=>setIntensity(!intensity)}/>
             
@@ -144,7 +158,7 @@ const GetSettings = forwardRef((props, ref)=>{
             </div>
             <div class="checkbox">    
 
-                  <p>Cell area: </p>
+                  <p>Cell area measurements: </p>
               
                   <input type = "checkbox" name="cellArea" onChange={()=>setCellArea(!cellArea)}/>
             
@@ -152,7 +166,7 @@ const GetSettings = forwardRef((props, ref)=>{
             </div>
             
 
-            <div class="checkbox">    
+            {/*<div class="checkbox">    
 
             <p>Cell clustering: </p>
 
@@ -190,19 +204,14 @@ const GetSettings = forwardRef((props, ref)=>{
             <p>Permuted interactions: </p>
 
             <input type = "checkbox" name="permutedInteractions" onChange={()=>setPermutedInteractions(!permutedInteractions)}/>
-
-            </div>
-                <div id = "infoBtnSettings" class="btn-instructions">  
-                    <button type="button" onClick={showInstructions}>Instructions</button>
-            </div>  
-            <div  hidden id = "hideInfoBtnSettings" class="btn-instructions">  
-                    <button type="button" onClick={hideInstructions}>Hide Instructions</button>
-            </div>  
+             
+            </div>*/}
+               
 
             <div hidden id="instructionsSettings" class="textarea-container">    
               <p disabled readonly rows="20" cols="50">
                 <b>Instructions:<br></br><br></br></b>
-                <b>Marker area measurements: </b>From the thresholded image areas of interests is measured. To visualize this process, you need to have two comparison groups.<br></br> 
+                <b>Image acquisition platform: </b>If "Operetta" is selected as image acquisition platform the images are normalized, if "Other" is selected the images are noramlized, denoised and the contrast is adjusted<br></br> 
                 <b>Image segmentation: </b>Deep learning segmentation. Cells from the background are segmented.<br></br>
                 <b>Cell type identification: </b>Identifies cells belonging to different populations or tissue compartments according to their overlap with regions of interest in the thresholded image.<br></br>
                 <b>Cell intensity measurements: </b>Computes pixel intensity distribution of segmented cells between two different groups.<br></br>

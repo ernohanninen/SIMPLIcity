@@ -1,3 +1,4 @@
 sample_name,marker,label,file_name,thresholding
-S1,LMX,LMX,/home/ernohanninen/simpli_project/App/run/raw_tiff/lmx_patch1.tif,Triangle
-S1,TH,TH,/home/ernohanninen/simpli_project/App/run/raw_tiff/patch1.tif,Triangle
+S1,HuNu,HuNu,/home/ernohanninen/simpli_project/App/run/raw_tiff/sample_1-HuNu1-Preprocessed_patch6.tif,Minimum
+S2,HuNu,HuNu,/home/ernohanninen/simpli_project/App/run/raw_tiff/sample_1-HuNu1-Preprocessed_patch9.tif,Minimum
+S3,HuNu,HuNu,/home/ernohanninen/simpli_project/App/run/raw_tiff/sample_1-HuNu32-Preprocessed_patch15.tif,Minimum

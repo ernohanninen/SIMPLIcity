@@ -33,6 +33,10 @@ from skimage.filters import threshold_minimum
 from skimage.filters import threshold_otsu
 from skimage.filters import threshold_sauvola
 from skimage.filters import threshold_yen
+from skimage.filters import threshold_triangle
+from skimage.filters import threshold_isodata
+from skimage.filters import threshold_mean
+from skimage.filters import threshold_li
 
 def get_arguments():
     parser = argparse.ArgumentParser(description = "Performs image preprocessing")
@@ -99,25 +103,40 @@ def preprocess_image(metadata, marker, thresholding):
                 #file = os.path.basename(value) #extracts the file name from the path
                 #Using regex to find the label from the file name
                 #label = re.search("(?<=-)\w+(?=-)", os.path.basename(value)).group(0)
+                thresholding = thresholding.lower()
                 
-                print("___________________________", marker)
                 #Read the image 
-                if thresholding == "Minimum":
+                if thresholding == "minimum":
                     thresholded = threshold_minimum(imageClahe)
                     thresholded_image = imageClahe > thresholded
                 
-                elif thresholding == "Yen":
+                elif thresholding == "yen":
                     thresholded = threshold_yen(imageClahe)
                     thresholded_image = image > thresholded
                     
-                elif thresholding == "Otsu":
+                elif thresholding == "otsu":
                     thresholded = threshold_otsu(imageClahe)
                     thresholded_image = image > thresholded
                 
-                elif thresholding == "Sauvola":
+                elif thresholding == "sauvola":
                     thresholded = threshold_sauvola(imageClahe)
                     thresholded_image = image > thresholded
                 
+                elif thresholding == "triangle":
+                    thresholded = threshold_triangle(imageClahe)#Thresholding 
+                    thresholded_image = image > thresholded  
+                    
+                elif thresholding == "li":
+                    thresholded = threshold_li(imageClahe)
+                    thresholded_image = image > thresholded 
+                    
+                elif thresholding == "mean":
+                    thresholded = threshold_mean(imageClahe)
+                    thresholded_image = image > thresholded
+                    
+                elif thresholding == "isodata":
+                    thresholded = threshold_isodata(imageClahe)
+                    thresholded_image = image > thresholded
                 
                 thresholded_image = np.invert(thresholded_image)
                 print(thresholded_image)

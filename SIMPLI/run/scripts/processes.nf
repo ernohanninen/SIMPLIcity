@@ -395,7 +395,7 @@ process sd_cell_segmentation {
         path("*merged.tif", emit: merged_tiffs) optional true
         path("*merged*.png", emit: merged_png) optional true
         //path("*merged.tif", emit: merged_tiffs) optional true
-
+        //python3 /opt/scripts/stardist_segment.py \\
     script:
     """
 	python3 /opt/scripts/stardist_segment.py \\
@@ -941,22 +941,24 @@ process compute_cell_area {
     container 'ernohanninen/py_container'
     containerOptions "--volume $script_folder:/opt"
     input:
-        path(annotated_cell_data_file)
+        path(cell_masks)
         path(cell_overlay_tiff) 
         path(cell_masking_metadata)
         val(cell_types)
+        val(co_expression_fraction)
 
     output:
         path("*.json", emit: measurements_of_cell_overlays) 
-        path("*.png", emit: overlap_img) 
+        path("*.png", emit: overlap_img) optional true
 
     script:
     """
 	python3 /opt/scripts/Cell_area_measurements.py \\
         $cell_overlay_tiff\\
-        $annotated_cell_data_file \\
+        $cell_masks \\
         $cell_masking_metadata \\
-        $cell_types
+        $cell_types \\
+        $co_expression_fraction
          > compute_cell_areas.txt 2>&1
     """
 

@@ -1,10 +1,9 @@
 import React,  { useState, forwardRef, useImperativeHandle } from 'react';
 import axios from "axios";
 import './App.css';
-import Table from "./sample_table.js";
 
 
-
+var PIPELINEoutput = ""
 const GetResults = () => { 
     
     //Variables
@@ -28,6 +27,7 @@ const GetResults = () => {
     const [dropDownPixel, setDropDownPixels] = useState("")
     const [cellArea, setCellArea] = useState("")
     
+    
 
     
     //const [displaySegmented, setDisplaySegmented] = useState(true)
@@ -41,6 +41,10 @@ const GetResults = () => {
     //Function which get the images from backend
     const displayResults = () => {
         document.getElementById("resultsButton").style.display = "none"
+        document.getElementById("outputMessage").style.display = "none"
+        document.getElementById("pipelineStatus").style.display = "none"
+        document.getElementById("outputB").style.display = "none"
+        document.getElementById("color_label").style.display = "block"
         axios.get("/fetchResults")
         .then(function(response){
            setTotalCells(response.data[1])
@@ -258,6 +262,11 @@ const GetResults = () => {
                 let idThresholdedDiv = "thresDiv" + key
                 let idSegmentedDiv = "segDiv" + key
 
+                console.log(Object.values(value)[0][2]["overlays"])
+                let temp_l = Object.values(value)[0][2]["overlays"].split("-")
+                let key_for_cell_count = temp_l[0].split("/")[1] + "-" + temp_l[1]
+                console.log(temp_l[0].split("/")[1])
+                console.log(key_for_cell_count)
                 //Return the html element
                 //THe segmented image and the counts are appended to the list only if the segmentation is executed
                 return([...sampleImages, 
@@ -275,8 +284,8 @@ const GetResults = () => {
                         <div id = {idSegmentedDiv}>
                             <p>Segmented {key}:</p>
                             <img class="contain" id ={idSegmented} src={require("../src/images/" + Object.values(value)[0][2]["overlays"])}  onClick= {event => displayFullScreen(idSegmented)}></img>  
-                            <p>Number of cells detected in image segmentation : {totalCells[key]}</p> 
-                            <p>Number of cells after removing unassigned ones : {resultingCells[key]}</p>       
+                            <p>Number of cells detected in image segmentation : {totalCells[key_for_cell_count]}</p> 
+                            <p>Number of cells after removing unassigned ones : {resultingCells[key_for_cell_count]}</p>       
                             <br></br>
                             <br></br>
                         </div>               
@@ -616,9 +625,14 @@ const GetResults = () => {
                 </div>
                 
                 <div hidden id="results">  
-                    <b>SIMPLI results</b>  
+                    <b>SIMPLIcity results</b>  
                     <br></br>
+                   
+                    <p id="pipelineStatus"></p>
+                    <br></br>
+
                     <button id="resultsButton" type="button" onClick={event => displayResults()}>Display results</button>
+
                     <div class = "row">
                         <div class = "colQC-1">
                             {dropDownSamples}     
@@ -628,10 +642,13 @@ const GetResults = () => {
                         </div>
                        
                     </div>
+                    <div id = "color_label" hidden></div>
+
+
                     <div class = "colQC-1">
                             {checkbox}                     
                     </div>
-                        
+                    
                     {sampleImages}
                     {markerImages}
                     {mergedImages}
@@ -640,6 +657,12 @@ const GetResults = () => {
                     {pixelComparisonPlot}
 
                 </div>
+                <br></br>
+                
+
+                <br></br>
+                <b id="outputB"hidden>Pipeline output message:</b>
+                <p id="outputMessage" ></p>
             </form>
         </div>
     )

@@ -29,6 +29,9 @@ from skimage.filters import threshold_otsu
 from skimage.filters import threshold_sauvola
 from skimage.filters import threshold_yen
 from skimage.filters import threshold_li
+from skimage.filters import threshold_triangle
+from skimage.filters import threshold_isodata
+from skimage.filters import threshold_mean
 
 from skimage.util import img_as_uint
 
@@ -189,20 +192,32 @@ def threshold_image():
     #li_thresholded_image = img_as_uint(li_thresholded_image, force_copy = True)
     io.imsave("src/images/test_thresholding/li_thresh.png", li_thresholded_image)
     
-    thresholding_dict = {}#Dict where the file paths are stored
+    thresholded = threshold_triangle(image)
+    triangle_thresholded_image = image > thresholded
+    triangle_thresholded_image = np.invert(triangle_thresholded_image)
+    io.imsave("src/images/test_thresholding/triangle_thresh.png", triangle_thresholded_image)
     
-    """li_size = os.path.getsize("src/images/test_thresholding/li_thresh.png")
-    while(li_size != os.path.getsize("src/images/test_thresholding/li_thresh.png")):
-        
+    thresholded = threshold_isodata(image)
+    isodata_thresholded_image = image > thresholded
+    isodata_thresholded_image = np.invert(isodata_thresholded_image)
+    io.imsave("src/images/test_thresholding/isodata_thresh.png", isodata_thresholded_image)
+    
+    
+    thresholded = threshold_mean(image)
+    mean_thresholded_image = image > thresholded
+    mean_thresholded_image = np.invert(mean_thresholded_image)
+    io.imsave("src/images/test_thresholding/mean_thresh.png", mean_thresholded_image)
+    
+    
+    
+    thresholding_dict = {}#Dict where the file paths are stored
+   
     #os.remove("original.tiff")
     
-    
-    if os.path.isfile("src/images/test_thresholding/li_thresh.png"):    
-        print("_____________________________________________--")                 
+  
     
     
     
-    """
     time.sleep(1)
     
     
@@ -371,7 +386,7 @@ def getSettings():
         file.readline() #Reads the header line
         counter = 0
         for line in file: #After header read line by line
-            marker = line.split(",")[1]#Split the line and take the first two arguments from the list returned by split
+            marker = line.split(",")[2]#Split the line and reads the label column
             if marker not in marker_list:
                 marker_dict.update({counter:{marker: marker}}) #Update the dictionary
                 counter += 1
@@ -389,7 +404,7 @@ def writeMetadata():
     json_data = request.get_json()
     print(json_data)
     print(len(json_data))
-    marker_dict, mask_dict, thresholds_dict, intensityCellType, cellAreaList = json_data["markers"], json_data["masks"], json_data["segmentingSettings"], json_data["intensityCellType"], json_data["cellAreaList"]
+    marker_dict, mask_dict, thresholds_dict, intensityCellType, fraction, cellAreaList = json_data["markers"], json_data["masks"], json_data["segmentingSettings"], json_data["intensityCellType"],json_data["fraction"], json_data["cellAreaList"]
     print(marker_dict)
     print(type(marker_dict))
     print(mask_dict)
@@ -411,7 +426,7 @@ def writeMetadata():
                 marker = list(value.keys())[0]
                 mainMarker = list(value.values())[0]
                 area_file.write(marker+","+mainMarker+"\n") #Write to file
-                
+    labels_to_segment = []
     #Checks that the mask_dict is not empty    
     if all(d for d in mask_dict)==True:
         #Open the file where to write the data
@@ -424,6 +439,7 @@ def writeMetadata():
                     metadata.append(list(elem.values())[0]) #Storing the metadata to list
                 
                 masking_file.write(metadata[0]+","+metadata[1]+","+metadata[2]+","+metadata[3]+"\n") #Write to file
+                labels_to_segment.append(metadata[1])
     #Checks that the thresholds_dict is not empty    
     if all(d for d in thresholds_dict)==True:
         with open("run/run_simpli.config", "a") as config_file:
@@ -431,16 +447,16 @@ def writeMetadata():
                 #Get the marker and main marker
                 if key == "model":
                     if value == "HuNu":
-                        config_file.write('params.sd_labels_to_segment = "HuNu"\n')
+                        config_file.write(f'params.sd_labels_to_segment = "{",".join(labels_to_segment)}"\n')
                         config_file.write('params.sd_model_name = "HuNu_segment"\n')             
                         config_file.write('params.sd_model_path = "/opt/models/"\n')
                     elif value == "2D_versatile_fluo":
-                        config_file.write('params.sd_labels_to_segment = "TH"\n')
+                        config_file.write(f'params.sd_labels_to_segment = "{",".join(labels_to_segment)}"\n')
                         config_file.write('params.sd_model_name = "2D_versatile_fluo"\n')             
                         config_file.write('params.sd_model_path = "default"\n')
                     elif value == "LMX":
                         
-                        config_file.write('params.sd_labels_to_segment = "TH,LMX"\n')
+                        config_file.write(f'params.sd_labels_to_segment = "{",".join(labels_to_segment)}"\n')
                         config_file.write('params.sd_model_name = "lmx_transfer_7"\n')             
                         config_file.write('params.sd_model_path = "/opt/models/"\n')
                         
@@ -453,6 +469,7 @@ def writeMetadata():
                 config_file.write(f'params.cell_type_for_intensity = "{intensityCellType}"\n')
             
             if cellAreaList != []:
+                config_file.write(f'params.co_expression_fraction =  "{fraction}"\n')
                 config_file.write(f'params.cell_type_to_measure_area = "{",".join([cell for cell in cellAreaList])}"\n')
                 
                 
@@ -469,7 +486,10 @@ def runPipeline():
     #Remove files from src/images subdirectories
     dir_list = ["Preprocessed", "Thresholded", "Area", "Overlays", "StarDist_Segmentation", "Intensity", "Cell_Area_Measurements"]
     for dir_name in dir_list: #Looping thru the subdirectories
-        directory = "src/images/" + dir_name
+        if dir_name == "Cell_Area_Measurements":
+            directory = "src/text"
+        else:
+            directory = "src/images/" + dir_name
         if os.path.isdir(directory):
             for filename in os.listdir(directory): #Get files of subdir
                 file = os.path.join(directory, filename) #build the file path
@@ -497,8 +517,11 @@ def runPipeline():
     if os.path.isdir("output/Cell_Area_Measurements"):
         shutil.copy2("output/Cell_Area_Measurements/Cell_area_measurements.json", "src/text/Cell_area_measurements.json")
     
+    output = str(output)
     #shutil.move in try catche
-    return "OK"
+    if "executor" in str(output):
+        output = output.rsplit("executor", 1)[1]
+    return output
 
 #Function that creates and returns a dictionary of the plots/images returned by SIMPLI
 @app.route("/fetchResults", methods = ["GET"])
@@ -534,15 +557,18 @@ def fetchResults():
                 for row in csv_reader: #loop over the file
                     cell_type = row[-1] #Last column of the csv is cell type
                     if "UNASSIGNED" in cell_type: #If cell unassigned, remove the the UNASSIGNED label from cell name 
-                        cell_type = cell_type.split("_")[1]
+                        cell_type_temp = cell_type.split("_")[1]
                     else:#Increase cell counter only when cell not unassigned
-                        cell_counter += 1 
-                    sample = row[0] + "-" + cell_type #First column of the csv is sample name
-                    #Update dict when sample/cell name changes and counters to zer
+                        cell_type_temp = cell_type
+                    sample = row[0] + "-" + cell_type_temp #First column of the csv is sample name
+                    
+                    #Update dict when sample/cell name changes and counters to zero
                     if prev_sample != sample and prev_sample != "":   
                         seg_cell_dict.update({prev_sample : total_counter})           
                         res_cell_dict.update({prev_sample : cell_counter})
                         cell_counter,total_counter = 0,0 
+                    if "UNASSIGNED" not in cell_type: #If cell unassigned, remove the the UNASSIGNED label from cell name 
+                        cell_counter += 1 
                     total_counter += 1 #Increse total counter every iteration                 
                     prev_sample = sample 
                 #Update the counts of last sample to dict
@@ -565,8 +591,20 @@ def fetchResults():
                 sample_marker_list.append(sample_marker)
             if sample not in sample_list:
                 sample_list.append(sample)
-            
-        
+                
+    with open("run/metadata/cell_masking_metadata.csv", "r") as file:
+        cell_type_dict = {}
+        file.readline() #Reads the header line
+        for line in file: #After header read line by line
+            cell_type = line.split(",")[0]#Split the line and take the first argument from the list returned by split
+            marker = line.split(",")[1]
+            print(cell_type, marker)
+            cell_type_dict[cell_type] = marker
+        print(cell_type_dict)
+    
+    print("###################################################################################")
+   # print(sample_list)
+    #print(sample_marker_list)
     #Reading the output of SIMPLI, changing the image format to png and moving the file to src/images folder 
     dir_list = ["Preprocessed", "Thresholded", "Overlays", "StarDist_Segmentation"]
     for dir_name in dir_list:
@@ -582,10 +620,20 @@ def fetchResults():
             if os.path.isdir(directory): #Check that directory exists  
                 for filename in os.listdir(directory):
                     sample = filename.split("-")[0]#Extracting the sample name from filename
-                     
-                    if filename.count("-") == 2 and "-overlay-unassigned-removed" not in filename:
-                        marker = filename.split("-")[1].replace("+", "") #Extracting the sample name from filename
+                    print(filename)
+                    if filename.count("-") >= 2 and "-overlay-unassigned-removed" not in filename and "merged_1" not in filename and ".tif" in filename or ".png" in filename :
+                        if dir_name != "Overlays":
+                            marker = filename.split("-")[1]
+                        elif dir_name == "Overlays" and "ALL" not in filename:
+                            cell_type = filename.split("-")[1] #Extracting the cell_type from filename
+                            marker = cell_type_dict[cell_type]
+                        else:
+                            marker = "ALL"
+                        print(marker)
                         sample_temp = sample + "-" + marker
+                        #print(sample_temp)
+                        #print(filename)
+                        #print(sample_marker)
                         if sample_temp == sample_marker or marker == "ALL":
                             file = os.path.join(directory, filename) #Building the file path
                             img = Image.open(file) #Reading the file
@@ -606,7 +654,7 @@ def fetchResults():
                             elif dir_name == "Thresholded": #if statement which updates the preprocessed images on image_dict temp dictionary
                                 #thresholded_dict =  {"thresholded": dir_name + "/" + temp + ".png"}     
                                 image_dict[sample][marker].append({"thresholded": dir_name + "/" + temp + ".png"})
-                                
+                            
                             elif dir_name == "Overlays" and sample_marker.split("-")[0] == temp.split("-")[0] and marker != "ALL":   
                             #elif dir_name == "Overlays" and sample == temp.split("-")[0] and len(image_dict[sample]) < 3:
                                 image_dict[sample][marker].append({"overlays": dir_name + "/" + temp + ".png"})
@@ -614,6 +662,9 @@ def fetchResults():
                             elif dir_name == "Overlays" and marker == "ALL":   
                             #elif dir_name == "Overlays" and sample == temp.split("-")[0] and len(image_dict[sample]) < 3:
                                 image_dict[sample]["merged_overlays"] =  dir_name + "/" + temp + ".png"
+                            
+                            print(dir_name, sample_marker.split("-")[0], temp.split("-")[0])
+                            
                     
                     if "merged_1" in filename:
                         if "merged_tiff" not in image_dict[sample].keys():#Adding new key to the dictionary, if the dict doesn't yet have the sample as a key
@@ -633,7 +684,6 @@ def fetchResults():
           
     #Copy the output of SIMPLI to src/images folder     
     area = ""
-   # /home/ernohanninen/simpli-app/output/Plots/Area_Plots/Boxplots/total_ROI_area/total_ROI_area_boxplots.png
     if os.path.isfile("src/images/Area/total_ROI_area_boxplots.png"):                     
         area = "total_ROI_area_boxplots.png"
         

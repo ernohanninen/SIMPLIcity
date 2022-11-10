@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="navbar" id = "AppNavbar">
-         <span className="nav-logo">App name</span>
+         <span className="nav-logo">SIMPLIcity</span>
            <ul className="nav-links">
               <Link to="/">Home</Link>
               <Link to="/thresholding">Thresholding</Link>

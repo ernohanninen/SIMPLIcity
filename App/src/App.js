@@ -22,18 +22,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
 
-//NExts steps: Prevent the user to submit sample with empyt input fields
-//Check that markers among sample are unique
-//Reformat the table
-//allow only submitting  tiff files
-//Be aware how the comparsion works
-//Should the colors be unique
-//Dropbox to the color?
-//Check that the input fields are empty when submitting
-//Check that file names are unique
+//NExts steps
+
+//When clicking DElete, empty the textboxes
+
+var groupsSet  = new Set()
 
 function Home(){
-
+  
 
   const [submitting, setSubmitting] = useState(false);
   const [sample, setSample] = useState("");
@@ -47,6 +43,7 @@ function Home(){
   const [isHovering2, setIsHovering2] = useState(false)
   const [info, setInfo] = useState("")
   const [results, setResults] = useState(false)
+  const [defaultSettings, setDefaultSettings] = useState(true)
   //const [sample_list, setSample_list] = useState([])
   const sample_list = []
 
@@ -56,8 +53,6 @@ function Home(){
     const labels = []
     const thresholds = []
     const temp_tiffs = []
-
-
 
     for(let i=0;i<inputFields.length;i++){
         markers[i] = inputFields[i]["marker"]
@@ -69,7 +64,13 @@ function Home(){
     let markers_set = [... new Set(markers)]
     let labels_set = [... new Set(labels)]
     let temp_tiff_set = [... new Set(temp_tiffs)]
+    console.log(Object.values(temp_tiff_set))
+    console.log(typeof temp_tiff_set)
 
+    console.log("________________________-")
+    console.log(comparison)
+
+    
 
     if(sample == "" | comparison == "" | color == "" | temp_tiffs == "" |  markers == '' | labels == '' | thresholds == ''){
       alert("Fill the fields")
@@ -84,25 +85,65 @@ function Home(){
     else if(temp_tiff_set.length != temp_tiffs.length){
       alert("Use unique tiff images within sample")
     }
+    else if(Object.values(temp_tiff_set).includes("")){
+      alert("Trying to submit empty tiff field")
+    }
+    else if(markers.includes(undefined)){
+      alert("Trying to submit empty marker field")
+    }
+    else if(labels.includes(undefined)){
+      alert("Trying to submit empty label field")
+    }
+    else if(thresholds.includes(undefined)){
+      alert("Trying to submit empty thresholding field")
+    }
+  
+
 
     else{
-
+      let files = []
+      for(let i = 0; i<temp_tiffs.length; i++){
+        files.push(temp_tiffs[i].name)
+      }
       let empty = true
       if (tableData.length==0){ empty = true }
       else{ empty = false }
-
       let exists = false
-      console.log(tableData)
+      if(comparison != "NA"){
+        groupsSet.add(comparison)
+
+      }
       if(tableData.length != 0){
         for(let i = 0; i<tableData.length;i++){
+          console.log(groupsSet)
           if(tableData[i]["sample"] === sample){       
             alert(sample +" already exists, use unique sample names")
             exists = true
           }
-          if(tableData[i]["comparison"] == comparison & tableData[i]["color"] != color){
-            alert("Colors within comparison group should match. Color to comparison group '" + comparison + "' should be set to '" + tableData[i]["color"] + "'")
+          else if(groupsSet.size == 3 & comparison != "NA"){
+            alert("Can't handle more than two comparison groups. To exclude sample from comparison set NA to Comparison textbox.")
             exists = true
           }
+          else if(tableData[i]["comparison"] == comparison & tableData[i]["color"] != color){
+            alert("Colors within comparison group should match. Color for comparison group '" + comparison + "' should be set to '" + tableData[i]["color"] + "'.")
+            exists = true
+          }
+          else if(tableData[i]["comparison"] != comparison & tableData[i]["color"] == color){
+            alert("The color is already used by another comparison group. Comparison group '" + tableData[i]["comparison"] + "' already uses '" + color + "'.")
+            exists = true
+          }
+          else if(files.includes(tableData[i]["tiffs"][0])){
+          //else if(.some(item => Object.values(temp_tiffs).includes(item)) == true){
+            alert("Failed to submit tiff. Image " + tableData[i]["tiffs"][0] + " exists in sample " + tableData[i]["sample"])
+            exists = true
+            
+          }
+          if(exists == true){
+            groupsSet.delete(comparison)
+            break;
+          }
+          
+
       
         }
       }
@@ -168,7 +209,13 @@ function Home(){
         });
           
         //###################################### Update the form ##################################################################
-        event.target.reset()//Empty variables
+        event.target.reset()//Empties sample and comparison textboxes
+        //Changes the value in dropdown menu
+        document.getElementById("colorSelector").value = "Select"
+        document.getElementById("sampleTB").value = ""
+        document.getElementById("comparisonTB").value = ""
+
+
         //Removes the dynamically created "add new tiff" elements
           inputFields.map(i => {
             const values  = inputFields
@@ -183,17 +230,13 @@ function Home(){
           setSubmitting(false);
         }, 1);
   
-        //Changes the value in dropdown menu
-        document.getElementById("colorSelector").value = "Select"
+        
       }
 
-    }
-
-
-         
+    }        
   }
   
-  const handleChangeInput = (id, event) => {
+  const handleChangeInput = (id, event, call) => {
     const newInputFields = inputFields.map(i => { //Map over the entries
       if(id === i.id) { 
         //This if statement is executed if the function is called from file upload button
@@ -206,7 +249,6 @@ function Home(){
           else{//if file extension is accepted then store the value to object
              i[event.target.name] = event.target.files[0]
           }
-
         }
 
         else{//if function is called from any other input field, the else is executed
@@ -219,7 +261,8 @@ function Home(){
             }
             else{ 
               i["label"] = event.target.value //By default the label is the same as marker
-              let drop_id ="thresholdingDropMenu"+id 
+              if(call =="dropdown"){
+                let drop_id ="thresholdingDropMenu"+id 
               let element = document.getElementById(drop_id) //Get HTML element
               //Depending to the marker the program automatically set's a default thresholding algorithm
               //These if statements set's the algorithm
@@ -244,6 +287,9 @@ function Home(){
                 element.value = "Triangle"              
               }
               console.log("OK")
+
+              }
+              
             }
             
           }
@@ -271,6 +317,21 @@ function Home(){
     setColor(event.target.value)
   }
 
+
+  const validateTextbox = event => {
+    let sample_value = document.getElementById("sampleTB").value
+    let comparison_value = document.getElementById("comparisonTB").value
+    let color_value = document.getElementById("colorSelector").value
+    //console.log(sample_value,comparison_value,color_value)
+    if(sample_value != "" & color_value != "Select" & comparison_value !=""){
+      alert("To proceed submit the unsubmitted sample")
+    }
+    else{
+
+      settingsPage()
+    }
+
+  }
 
 
   const settingsPage = event => {
@@ -313,14 +374,7 @@ function Home(){
 
   }
 
-  const resultsPage = event => {
-    document.getElementById("metadataPage").style.display = "none"
-    document.getElementById("resultsPage").style.display = "block";
-    document.getElementById("returnButton2").style.display = "none"
-    document.getElementById("nextButton3").style.display = "none"
-    
 
-  }
   
   const showInstructions = event => {
     //setInfo()
@@ -345,15 +399,25 @@ function Home(){
   <div id="samplePage">
       
       <form  onSubmit={handleSubmit}>
-        <b>Submit samples:</b>     
+        <div class = "submitSamplesDiv">
+          
+            <b>Submit samples:</b>  
+            
+            <div class="checkboxDefault">  
+              <p>Default settings: </p>
+              <input type = "checkbox" name="defaultSettings" onChange={()=>setDefaultSettings(!defaultSettings)} defaultChecked={defaultSettings}/>
+            
+          </div>
+        </div>
+           
           <div class="row">
             <div class="col-1">    
                   <p name = "sample">Sample</p>
-                  <input name="sample" onChange={(e)=>setSample(e.target.value)} size="10"/>                
+                  <input id="sampleTB" name="sample" onChange={(e)=>setSample(e.target.value)} size="10"/>                
             </div>
             <div class="col-2">    
                   <p>Comparison</p>
-                  <input name="comparison" onChange={(e)=>setComparison(e.target.value)} size="10"/> 
+                  <input id = "comparisonTB" name="comparison" onChange={(e)=>setComparison(e.target.value)} size="10"/> 
                 
             </div>
             <div class="col-3">    
@@ -375,47 +439,69 @@ function Home(){
             { inputFields.map(inputField => (
          
             
-            <div key={inputField.id}>
-            <div class="row">
-              <div class="col-1">    
-                    <p>Load tiff</p>
-                    <input id = {inputField.id} name="tiff" type = "file" onChange={event => handleChangeInput(inputField.id,event)}/>                
+              <div key={inputField.id}>
+              <div class="row">
+                <div class="col-1">    
+                      <p>Load tiff</p>
+                      <input id = {inputField.id} name="tiff" type = "file" onChange={event => handleChangeInput(inputField.id,event, "fileLoader")}/>                
 
-              </div>
-              <div class="col-2">    
-                  
-                    
+                </div>
+
+                {defaultSettings ? (
+                <div class="col-2">            
+                    <p>Marker</p>
+                    <select name="marker" id="marker" onChange={event => handleChangeInput(inputField.id,event, "dropdown")}>
+                        <option selected="true" disabled="disabled">Select</option> 
+                        <option value="ChAT">ChAT</option>
+                        <option value="DAPI">DAPI</option>
+                        <option value="HuNu">HuNu</option>
+                        <option value="LMX">LMX</option>
+                        <option value="TH">TH</option>
+                    </select>    
+                </div>
+                ):(<div class="col-2">
+                     
                   <p>Marker</p>
-                  <select name="marker" id="marker" onChange={event => handleChangeInput(inputField.id,event)}>
-                      <option selected="true" disabled="disabled">Select</option> 
-                      <option value="ChAT">ChAT</option>
-                      <option value="DAPI">DAPI</option>
-                      <option value="HuNu">HuNu</option>
-                      <option value="LMX">LMX</option>
-                      <option value="TH">TH</option>
-                      <option value="other">Other</option>
+                  <input name = "marker"  onChange={event => handleChangeInput(inputField.id,event, "tb")} size="10"/>                
+
+                  </div>)         
+              }   
 
 
-                  </select>
-              
-              </div>
               <div class="col-3">    
                     <p>Label</p>
-                    <input name="label" value={inputField["label"]} onChange={event => handleChangeInput(inputField.id,event)} size="10"/>                
+                    <input name="label" value={inputField["label"]} onChange={event => handleChangeInput(inputField.id,event, "tb")} size="10"/>                
 
               </div>
+              {defaultSettings ? (
               <div class="col-4">    
                     <p>Thresholding</p>
-                    <select name="thresholding" id={"thresholdingDropMenu"+inputField.id} onChange={event => handleChangeInput(inputField.id,event)}>
+                    <select name="thresholding" id={"thresholdingDropMenu"+inputField.id} onChange={event => handleChangeInput(inputField.id,event, "dropdown")}>
                       <option selected="true" disabled="disabled">Select</option>    
                       <option value="Minimum">Minimum</option>
                       <option value="Otsu">Otsu</option>
                       <option value="Triangle">Triangle</option>
                       <option value="Yen">Yen</option>
+                      <option value="Sauvola">Sauvola</option>
+                      <option value="Isodata">Isodata</option>
+                      <option value="Mean">Mean</option>
+                      <option value="Li">Li</option>
+
+
+
+
 
                   </select>           
 
               </div>
+                ):(<div class="col-2">
+                     
+                <p>Thresholding</p>
+                <input name = "thresholding"  onChange={event => handleChangeInput(inputField.id,event, "tb")} size="10"/>                
+
+                </div>)         
+            }   
+
               <div class="col-remove">
                 <button disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}>Remove</button>
                 
@@ -450,6 +536,7 @@ function Home(){
           <div hidden id="instructions" class="textarea-container">    
               <p disabled readonly rows="20" cols="50">
                 <b>Instructions:<br></br><br></br></b>
+                <b>Default settings:</b>Sample settings that are optimized for data used during the app development project<br></br> 
                 <b>Sample: </b>Identifier to be used to refer this sample in the analysis.<br></br> 
                 <b>Color: </b>Color used to represent this sample in plots. <br></br>
                 <b>Comparison: </b>Pairwise comparisons will be made only if there are two category names among samples. To exclude a sample from comparison, set comparsion field to NA.<br></br>
@@ -483,13 +570,13 @@ function Home(){
   </div>
   <div class ="buttonRow" >
           <div class ="next-btn1" id="nextButton1">         
-            <button disabled={tableData.length === 0} type="button" onClick={settingsPage}>Next</button>
+            <button disabled={tableData.length === 0} type="button" onClick={()=>{validateTextbox()}}>Next</button>
           </div>
           <div hidden class ="next-btn" id="nextButton2">
             <button type="button" onClick={()=>{settingsChildRef.current.submitSettings();metadataChildRef.current.getProcesses()}}>Next</button>           
           </div>
           <div hidden class ="run-btn" id="nextButton3">
-            <button type="button" onClick={()=>{metadataChildRef.current.submitMetadata();resultsPage()}}>Run</button>
+            <button type="button" onClick={()=>{metadataChildRef.current.submitMetadata()}}>Run</button>
           </div>
           <div hidden class ="return-btn" id="returnButton">
             <button type="button" onClick={samplePage}>Return</button>
