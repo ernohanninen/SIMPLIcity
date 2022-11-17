@@ -71,80 +71,106 @@ nextflow run main.nf -c run/run_simplicity.config
 ```
 
 #### Nextflow configuration file
-Parameters to SIMPLIcity are specified in nextflow configuartion file
+Parameters to SIMPLIcity are specified in nextflow configuartion file. Some of the SIMPLI features are not tested in SIMPLIcity, hence those are not described in here in detail. Regarding those processes, see the [documentation to run SIMPLI](https://github.com/ciccalab/SIMPLI/wiki/Run#simpli-parameters) 
 
-params.instrument_operetta = true
+
 
 ##### Input
 Path to the metadata files containing input samples and images.
-- sample_metadata_file = Metadata file containing the samples used in analysis.
-- tiff_input_metadata_file = Metadata file for single-channel TIFF input image.
+- `sample_metadata_file` = Metadata file containing the samples used in analysis.
+- `tiff_input_metadata_file` = Metadata file for single-channel TIFF input image.
 
+##### Imaging platform
+If images are aqcuired with Operetta CLS system, set `params.instrument_operetta` to `true`, with other imaging platforms use `false`
+`params.instrument_operetta` = `true`
 
 ##### Selection of analysis processes to run
 
 Specify the processes to skip using either `true` or `false` as values. The processes which aren't executable/tested on SIMPLIcity are initialized to `true`, and threfore should be skipped
-- skip_conversion = `true`
-- skip_normalization = Do not perform image channel normalization. When using images aqcuired with Operetta CLS system, set true.
-- skip_preprocessing = Do not perform image denoising and contrast enhancement
-- skip_area = Do not perform thresholding based pixel-level analysis.
-- skip_cp_segmentation = `true`
-- skip_sd_segmentation = Do not perform deep-learning based cell segmentation with StarDist.
-- skip_cell_type_identification = Do not perform cell type identification.
-- params.skip_cell_area_measurements = Do not identify co-expressing cells or measure cell area of specified cell type.
-- skip_cell_clustering = `true`
-- skip_cell_thresholding = `true`
-- skip_homotypic_interactions = `true`
-- skip_heterotypic_interactions = `true`
-- skip_permuted_interactions = `true`
-- skip_visualization = Do not perform any of the following visualization steps.
-- skip_area_visualization = `true`
-- skip_type_visualization = Do not plot the results of the cell type identification.
-- params.skip_intensity_visualization = Do not perform measure and visualize pixel intensity distribution between two groups
+- `skip_conversion` = `true`
+- `skip_normalization` = Do not perform image channel normalization. When using images aqcuired with Operetta CLS system, set `true`.
+- `skip_preprocessing` = Do not perform image denoising and contrast enhancement
+- `skip_area` = Do not perform thresholding based pixel-level analysis.
+- `skip_cp_segmentation` = `true`
+- `skip_sd_segmentation` = Do not perform deep-learning based cell segmentation with StarDist.
+- `skip_cell_type_identification` = Do not perform cell type identification.
+- `params.skip_cell_area_measurements` = Do not identify co-expressing cells or measure cell area of specified cell type.
+- `skip_cell_clustering` = `true`
+- `skip_cell_thresholding` = `true`
+- `skip_homotypic_interactions` = `true`
+- `skip_heterotypic_interactions` = `true`
+- `skip_permuted_interactions` = `true`
+- `skip_visualization` = Do not perform any of the following visualization steps.
+- `skip_area_visualization` = `true`
+- `skip_type_visualization` = Do not plot the results of the cell type identification.
+- `params.skip_intensity_visualization` = Do not perform measure and visualize pixel intensity distribution between two groups
 - skip_cluster_visualization = `true`
-- skip_thresholding_visualization = `true`
-- skip_homotypic_visualization = `true`
-- skip_heterotypic_visualization = `true`
-- skip_permuted_visualization = `true`
+- `skip_thresholding_visualization` = `true`
+- `skip_homotypic_visualization` = `true`
+- `skip_heterotypic_visualization` = `true`
+- `skip_permuted_visualization` = `true`
 
 
 ##### Process specific metadata files
 
 Path to files which contains user-specified settings for the processes. The files which are for processes not tested in SIMPLIcity are initialized to `null`.
-- area_measurements_metadata = `null`
-- cell_clustering_metadata = `null`
-- cell_thresholding_metadata = `null`
-- cell_masking_metadata = Metadata file with the parameters for cell type identification.
-- homotypic_interactions_metadata = `null`
-- heterotypic_interactions_metadata = `null`
+- `area_measurements_metadata` = `null`
+- `cell_clustering_metadata` = `null`
+- `cell_thresholding_metadata` = `null`
+- `cell_masking_metadata` = Metadata file with the parameters for cell type identification.
+- `homotypic_interactions_metadata` = `null`
+- `heterotypic_interactions_metadata` = `null`
 
 ##### Step specific metadata files
 SIMPLI allows users to skip processes and instead enables users to supply the output data of a processs. However, this functionality is not tested in SIMPLIcity, therefore these parameters are initialized to `null`.
-- raw_metadata_file = `null`
-- channel_metadata = `null`
-- normalized_metadata_file = `null`
-- preprocessed_metadata_file = `null`
-- area_measurements = `null`
-- single_cell_data_file = `null`
-- annotated_cell_data_file = `null`
-- clustered_cell_data_file = `null`
-- thresholded_cell_data_file = `null`
-- homotypic_interactions_file = `null`
-- heterotypic_interactions_file = `null`
-- single_cell_masks_metadata = `null`
-- shuffled_interactions_file = `null`
+- `raw_metadata_file` = `null`
+- `channel_metadata` = `null`
+- `normalized_metadata_file` = `null`
+- `preprocessed_metadata_file` = `null`
+- `area_measurements` = `null`
+- `single_cell_data_file` = `null`
+- `annotated_cell_data_file` = `null`
+- `clustered_cell_data_file` = `null`
+- `thresholded_cell_data_file` = `null`
+- `homotypic_interactions_file` = `null`
+- `heterotypic_interactions_file` = `null`
+- `single_cell_masks_metadata` = `null`
+- `shuffled_interactions_file` = `null`
 
 ##### CellProfiler4 pipelines
 Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameters needs to be initialized.
-- cp4_preprocessing_cppipe = `null`
-. cp4_segmentation_cppipe = `null`
+- `cp4_preprocessing_cppipe` = `null`
+- `cp4_segmentation_cppipe` = `null`
 
 ##### StarDist segmentation settings
-sd_labels_to_segment = comma separated list of labels to include in the multichannel image used for segmentation. The labels mucnames must match those in the preprocessed_metadata_file
-sd_model_name = name of the model to use
-sd_model_path = path to the model to use or "default" for the models included with StarDist
-sd_prob_thresh = probability threshold used for calling cells: 0 < value < 1 or "default" to use the default valuse saved in the model.
-sd_nms_thresh = threshold above which Non-Maximum Suppression is performed: 0 < value < 1 or "default" to use the default valuse saved in the model
+- `sd_labels_to_segment` = comma separated list of labels to include in the multichannel image used for segmentation. The labels much match the labels in tiff_input_metadata file. For example: "label1,label2"
+- `sd_model_name` = name of the model to use
+- `sd_model_path` = path to the model to use or "default" for the models included with StarDist. If model is stored in /home/user/SIMPLIcity/SIMPLIcity/run/models the value is `"/opt/models/"` 
+- `sd_prob_thresh` = probability threshold used to segment cells: 0 < value < 1. Higher values leads to fewer segmented objects.
+- `sd_nms_thresh` = threshold above which Non-Maximum Suppression is performed: 0 < value < 1. Higher values allows objects to overlap more substantially.
+
+###### Pixel analysis settings
+- `params.co_expression_fraction` =  The threshold fraction to identify cell overlapping other cell (co-expression). 0 < value < 1.
+- `params.cell_type_to_measure_area` = Comma separated list of cells used to measure area or co-expression. For example: "cell1,cell2,cell3,cell1/cell2" computes area and number of cell1, cell2 and cell3 and in addition the amount of cell1 which are also cell2 (co-expression). Here the `co_expression_fraction` is used to detect the overlapping cells.
+- `params.cell_type_for_intensity` = `cell_type_for_intensity` should match threshold one `cell_type` cell_masking_metadata.csv file
+
+###### Permutation analysis
+Even though the permutation analysis is not tested in SIMPLIcity, the parameter needs to be initialized
+
+`params.permutations` = null
+
+##### Cell clustering visualization
+User specified colors for UMAP visualization. These needs to specified even though clustering is not executed.
+
+- `high_color` = "'#FF0000'"
+- `mid_color` = "'#FFFFFF'"
+- `low_color` = "'#0000FF'"
+
+##### Output
+`output_folder` = Specifies the path where all output of SIMPLIcity is stored
+tiff_type = `single`, the pipeline has been tested only with single channel images 
+
+
 
 #### SIMPLIcity metadata files
 
