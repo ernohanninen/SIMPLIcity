@@ -37,6 +37,7 @@ conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkze
 ## Usage
 
 ### User-interface
+To run the pipeline from web-based user-interface follow these instructions.
 1. Navigate to the App folder
 ```
 cd simpli_project/SIMPLIcity
@@ -59,7 +60,8 @@ You should now find the app from browser by typing: http://localhost:3000/
 
 
 ### Command-line
-To run the pipeline on command-line [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
+To run the pipeline from command line, follow these instructions.
+For command line usage [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
 
 1. To run the pipeline, navigate to folder where main.nf file is located
 ```
@@ -81,8 +83,8 @@ Path to the metadata files containing input samples and images.
 - `tiff_input_metadata_file` = Metadata file for single-channel TIFF input image.
 
 ##### Imaging platform
-If images are aqcuired with Operetta CLS system, set `params.instrument_operetta` to `true`, with other imaging platforms use `false`
-`params.instrument_operetta` = `true`
+
+- `params.instrument_operetta` = If images are aqcuired with Operetta CLS system, set `params.instrument_operetta` to `true`, with other imaging platforms use `false`
 
 ##### Selection of analysis processes to run
 
@@ -103,8 +105,8 @@ Specify the processes to skip using either `true` or `false` as values. The proc
 - `skip_visualization` = Do not perform any of the following visualization steps.
 - `skip_area_visualization` = `true`
 - `skip_type_visualization` = Do not plot the results of the cell type identification.
-- `params.skip_intensity_visualization` = Do not perform measure and visualize pixel intensity distribution between two groups
-- skip_cluster_visualization = `true`
+- `params.skip_intensity_visualization` = Do not perform measure and visualize pixel intensity distribution between two groups. To plot pixel distribution between two groups make sure there are two comparison groups in sample metadata file.
+- `skip_cluster_visualization` = `true`
 - `skip_thresholding_visualization` = `true`
 - `skip_homotypic_visualization` = `true`
 - `skip_heterotypic_visualization` = `true`
@@ -152,7 +154,7 @@ Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameter
 ###### Pixel analysis settings
 - `params.co_expression_fraction` =  The threshold fraction to identify cell overlapping other cell (co-expression). 0 < value < 1.
 - `params.cell_type_to_measure_area` = Comma separated list of cells used to measure area or co-expression. For example: "cell1,cell2,cell3,cell1/cell2" computes area and number of cell1, cell2 and cell3 and in addition the amount of cell1 which are also cell2 (co-expression). Here the `co_expression_fraction` is used to detect the overlapping cells.
-- `params.cell_type_for_intensity` = `cell_type_for_intensity` should match threshold one `cell_type` cell_masking_metadata.csv file
+- `params.cell_type_for_intensity` = `cell_type_for_intensity` should match threshold one `cell_type` cell_masking_metadata.csv file. 
 
 ###### Permutation analysis
 Even though the permutation analysis is not tested in SIMPLIcity, the parameter needs to be initialized
@@ -167,14 +169,26 @@ User specified colors for UMAP visualization. These needs to specified even thou
 - `low_color` = "'#0000FF'"
 
 ##### Output
-`output_folder` = Specifies the path where all output of SIMPLIcity is stored
-tiff_type = `single`, the pipeline has been tested only with single channel images 
+- `output_folder` = Specifies the path where all output of SIMPLIcity is stored
+- `tiff_type` = `single`, the pipeline has been tested only with single channel images 
 
 
 
 #### SIMPLIcity metadata files
+To fill the metadata use the SIMPLIcity metadata templates provided in [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/tree/master/SIMPLIcity/run/metadata) folder
+##### Sample metadata file
+Contains all samples used in the analysis. By default this file is named sample_metadata.csv and the following fields are requried:
+- `sample_name`: Identifier to be used to refer to this sample in the analysis.
+- `color`: Color used to represent this sample in plots, input can be color name or hexadecimal in #RGB or #RGBA format
+- `comparison column`: Each sample is associated a category name. To exclude a sample from the comparison, set its field to "NA". Pairwise comparisons will be made only if there are two category names among samples ("NA" excluded).
 
-
+##### Tiff image metadata file
+File which contains the images and their metadata for each sample. One sample can contain several image channels. SIMPLIcity has been tested with images containing max three image channels. SIMPLIcity has not been tested with RGB images. By default this file is named tiff_input_metadata.csv and the following fields are requried:
+- `sample_name`: Identifier to be used to refer to this sample in the analysis, should correspond sample in sample metadata file. Note, the markers among samples should match.
+- `marker`: Marker associated to the channel.
+- `label`: Label used to name the channel in the analysis.
+- `file_name`: Input file path.
+- `thresholding`: Thresholding algorithm to be used to threshold the input tiff. The value needs to be one of the following thresholding algorithms:`sauvola`, `isodata`, `li`, `mean`, `minimum`, `otsu`, `triangle`, or `yen`.
 
 
 
