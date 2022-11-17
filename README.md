@@ -59,7 +59,7 @@ You should now find the app from browser by typing: http://localhost:3000/
 
 
 ### Command-line
-To run the pipeline on command-line [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity input metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
+To run the pipeline on command-line [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
 
 1. To run the pipeline, navigate to folder where main.nf file is located
 ```
@@ -71,7 +71,68 @@ nextflow run main.nf -c run/run_simplicity.config
 ```
 
 #### Nextflow configuration file
+Parameters to SIMPLIcity are specified in nextflow configuartion file
 
+params.instrument_operetta = true
+
+##### Input
+Specify file path to the metadata files containing input samples and images.
+- sample_metadata_file = Metadata file containing the samples used in analysis.
+- tiff_input_metadata_file = Metadata file for single-channel TIFF input image.
+
+
+##### Selection of analysis processes to run
+
+Specify the processes to skip using either `true` or `false` as values. The processes which aren't executable/tested on SIMPLIcity are initialized to `true`, and threfore should be skipped
+- skip_conversion = `true`
+- skip_normalization = Do not perform image channel normalization. When using images aqcuired with Operetta CLS system, set true.
+- skip_preprocessing = Do not perform image denoising and contrast enhancement
+- skip_area = Do not perform thresholding based pixel-level analysis.
+- skip_cp_segmentation = `true`
+- skip_sd_segmentation = Do not perform deep-learning based cell segmentation with StarDist.
+- skip_cell_type_identification = Do not perform cell type identification.
+- params.skip_cell_area_measurements = Do not identify co-expressing cells or measure cell area of specified cell type.
+- skip_cell_clustering = `true`
+- skip_cell_thresholding = `true`
+- skip_homotypic_interactions = `true`
+- skip_heterotypic_interactions = `true`
+- skip_permuted_interactions = `true`
+- skip_visualization = Do not perform any of the following visualization steps.
+- skip_area_visualization = `true`
+- skip_type_visualization = Do not plot the results of the cell type identification.
+- params.skip_intensity_visualization = Do not perform measure and visualize pixel intensity distribution between two groups
+- skip_cluster_visualization = `true`
+- skip_thresholding_visualization = `true`
+- skip_homotypic_visualization = `true`
+- skip_heterotypic_visualization = `true`
+- skip_permuted_visualization = `true`
+
+
+##### Process specific metadata files
+
+Files which contains user-specified settings for the processes. The files which are for processes not tested in SIMPLIcity are initialized to `null`.
+- area_measurements_metadata = `null`
+- cell_clustering_metadata = `null`
+- cell_thresholding_metadata = `null`
+- cell_masking_metadata = Metadata file with the parameters for cell type identification.
+- homotypic_interactions_metadata = `null`
+- heterotypic_interactions_metadata = `null`
+
+##### Process specific metadata files
+SIMPLI allows users to skip processes and instead enables users to supply the output data of a processs. However, this functionality is not tested in SIMPLIcity, therefore initialize these parameters to `null`.
+- raw_metadata_file = `null`
+- channel_metadata = `null`
+- normalized_metadata_file = `null`
+- preprocessed_metadata_file = `null`
+- area_measurements = `null`
+- single_cell_data_file = `null`
+- annotated_cell_data_file = `null`
+- clustered_cell_data_file = `null`
+- thresholded_cell_data_file = `null`
+- homotypic_interactions_file = `null`
+- heterotypic_interactions_file = `null`
+- single_cell_masks_metadata = `null`
+- shuffled_interactions_file = `null`
 
 #### SIMPLIcity metadata files
 
