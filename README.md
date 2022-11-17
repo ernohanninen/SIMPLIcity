@@ -59,7 +59,7 @@ You should now find the app from browser by typing: http://localhost:3000/
 
 
 ### Command-line
-To run the pipeline on command-line [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/edit/master/README.md#nextflow-configuration-file) file and [SIMPLIcity input metadata](https://github.com/ernohanninen/SIMPLIcity/edit/master/README.md#nextflow-configuration-file) files needs to be set up.
+To run the pipeline on command-line [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity input metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
 
 1. To run the pipeline, navigate to folder where main.nf file is located
 ```
