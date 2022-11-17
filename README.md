@@ -58,6 +58,26 @@ yarn start
 You should now find the app from browser by typing: http://localhost:3000/
 
 
+### Command-line
+To run the pipeline on command-line [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/edit/master/README.md#nextflow-configuration-file) file and [SIMPLIcity input metadata](https://github.com/ernohanninen/SIMPLIcity/edit/master/README.md#nextflow-configuration-file) files needs to be set up.
+
+1. To run the pipeline, navigate to folder where main.nf file is located
+```
+cd ~/simpli_project/SIMPLIcity/
+```
+2. Run the pipeline
+```
+nextflow run main.nf -c run/run_simplicity.config 
+```
+
+#### Nextflow configuration file
+
+
+#### SIMPLIcity metadata files
+
+
+
+
 
 1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
 2. Add an other sample. Use unique sample name, USE A DIFFERENT comparison group than in sample1, select color. Then load the images you didn't use in sample1 and update the marker info. You should now have two samples with two markers in the table.
