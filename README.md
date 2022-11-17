@@ -76,7 +76,7 @@ Parameters to SIMPLIcity are specified in nextflow configuartion file
 params.instrument_operetta = true
 
 ##### Input
-Specify file path to the metadata files containing input samples and images.
+Path to the metadata files containing input samples and images.
 - sample_metadata_file = Metadata file containing the samples used in analysis.
 - tiff_input_metadata_file = Metadata file for single-channel TIFF input image.
 
@@ -110,7 +110,7 @@ Specify the processes to skip using either `true` or `false` as values. The proc
 
 ##### Process specific metadata files
 
-Files which contains user-specified settings for the processes. The files which are for processes not tested in SIMPLIcity are initialized to `null`.
+Path to files which contains user-specified settings for the processes. The files which are for processes not tested in SIMPLIcity are initialized to `null`.
 - area_measurements_metadata = `null`
 - cell_clustering_metadata = `null`
 - cell_thresholding_metadata = `null`
@@ -118,8 +118,8 @@ Files which contains user-specified settings for the processes. The files which 
 - homotypic_interactions_metadata = `null`
 - heterotypic_interactions_metadata = `null`
 
-##### Process specific metadata files
-SIMPLI allows users to skip processes and instead enables users to supply the output data of a processs. However, this functionality is not tested in SIMPLIcity, therefore initialize these parameters to `null`.
+##### Step specific metadata files
+SIMPLI allows users to skip processes and instead enables users to supply the output data of a processs. However, this functionality is not tested in SIMPLIcity, therefore these parameters are initialized to `null`.
 - raw_metadata_file = `null`
 - channel_metadata = `null`
 - normalized_metadata_file = `null`
@@ -133,6 +133,18 @@ SIMPLI allows users to skip processes and instead enables users to supply the ou
 - heterotypic_interactions_file = `null`
 - single_cell_masks_metadata = `null`
 - shuffled_interactions_file = `null`
+
+##### CellProfiler4 pipelines
+Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameters needs to be initialized.
+- cp4_preprocessing_cppipe = `null`
+. cp4_segmentation_cppipe = `null`
+
+##### StarDist segmentation settings
+sd_labels_to_segment = comma separated list of labels to include in the multichannel image used for segmentation. The labels mucnames must match those in the preprocessed_metadata_file
+sd_model_name = name of the model to use
+sd_model_path = path to the model to use or "default" for the models included with StarDist
+sd_prob_thresh = probability threshold used for calling cells: 0 < value < 1 or "default" to use the default valuse saved in the model.
+sd_nms_thresh = threshold above which Non-Maximum Suppression is performed: 0 < value < 1 or "default" to use the default valuse saved in the model
 
 #### SIMPLIcity metadata files
 
