@@ -264,6 +264,55 @@ The image annotations was created using [Labkit](https://imagej.net/plugins/labk
 6. Export labelling, select `Save Labeling..` > `File format` > `TIF Image`
 
 ### StarDist model training
+To train the HuNu and LMX1A deep-learning image segmentation model we used a [script](https://nbviewer.org/github/stardist/stardist/blob/master/examples/2D/2_training.ipynb) provided by stardist.
+In addition to using custom model names, we adjusted the following parameters:
+- `quick_demo` = false
+- Regarding the hyperparameters, the best performing model was trained with the following parameters (if the parameter is not defined in the table, default value was used):
+
+| Model  | Learning rate | Batch size | Epochs | Steps | Dropout |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ---------- |
+| HuNu_model  | 0.0003  | 32  | 90 | 100  | 0.0  |
+| LMX1A_model  | 0.0001  | 32  | 120 | 95  | 0.0  |
+
+- The LMX1A and HuNu model was trainied on Kebnekaise HPC server, which uses SLURM workload manages. Here is an example of an SLURM script used to start the training:
+
+```
+#SBATCH -A ernohan
+#SBATCH -n 8
+#SBATCH --time=05:00:00
+#SBATCH --error=job.%J.err 
+#SBATCH --output=job.%J.out
+
+# Clear the environment from any previously loaded modules
+module purge > /dev/null 2>&1
+
+# Activate python env 
+source /proj/nobackup/snic2022-22-293/Public/TRAINenv/bin/activate
+
+# Run the script
+python3 train.py
+```
+
+- This script is named runSbatch.sh and the job can be submitted using:
+```
+sbatch runSbatch.sh
+```
+
+- The trained model copied to local computed for further inspection
+
+### ZeroCostDL4Mic transfer learning
+The HuNu and LMX1A models was used as pretrained models for training ChAT- and LMX1A_TH-model. Here the [script](https://github.com/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/StarDist_2D_ZeroCostDL4Mic.ipynb) provided by ZeroCostDL4Mic was used.
+
+In addition to using custom model names, we adjusted the following parameters:
+- For ChAT model the pretrained model used was HuNu and for LMX1A model the pretrained model used was LMX1A
+- For ChAT model 25 % of the input data was used for validation set, and for LMX1A_TH model 35 %
+- Regarding the hyperparameters, the best performing model was trained with the following parameters (if the parameter is not defined in the table, default value was used):
+
+| Model  | Learning rate | Batch size | Epochs | Steps | Dropout |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ---------- |
+| ChAT_model  | 0.001  | 16  | 50 | 20  | 0.0  |
+| LMX1A_TH_
+model  | 0.001  | 10  | 70 | 30  | 0.4  |
 
 
 
