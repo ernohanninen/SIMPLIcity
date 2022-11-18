@@ -217,7 +217,58 @@ These instructions concerns both web-app and command-line usage. Even though the
 
 
 
-## Import images from Operetta CLS system
+## Processing images before model training and SIMPLIcity
+
+### Reshape images from Operetta CLS system
+Before deep-learning model training or the SIMPLIcity image analysis, the images aqcuired with Operetta CLS system needs to be processed using [Perkin Elmer Operetta Stitcher](https://c4science.ch/w/bioimaging_and_optics_platform_biop/image-processing/imagej_tools/perkinelmer-stitching/)
+
+Operetta Stitcher can be used in [Fiji](https://imagej.net/software/fiji/) 
+
+See the links above for installation and instructions.
+
+After Fiji and Operetta Stitcher is installed the images can be reshaped for analysis in SIMPLIcity or for model training.
+1. Open BIOP Operetta Import `Plugins` > `BIOP` > `Importers` > `BIOP` Operetta Import
+2. Each image channel was exported individually, we used following settings:
+   - Input directory is the Images folder in Operetta output 
+   - Select the folder where the output is stored
+   - `Export file(s) as`: `Fused fields`
+   - `Project Z Slices`: `True`
+   - `Z Projection Method`: `Standard deviation`
+   - `Export Sub Channels`: `True`
+   - `Channel(s) to Export`: 1
+3. For each Image we run the following step four times, as the images composed of four image channels. The settings were otherwise the same but `Channel(s) to Export` value was changed for each run as we needed to export channel 1, 2, 3 and 4.
+5. The reshaped images were renamed, as SIMPLIcity doesn't allow whitespaces in image names.
+6. The image format form 32 bit was changed to 8 bit. Select `Image` > `Type` > `8-bit`
+7. Save the reformatted image.
+
+### Reformat images aqcuired with Leica microscope
+The images aqcuired with Leica microscope was saved in RGB format. Before model training the image type was changed using Fiji.
+1. Open the image
+2. Select `Image` > `Type` > `8-bit`
+3. Save the reformatted image.
+
+## Model training
+To train deep-learning model images with their corresponding masks are required, this requires image annotation. Before annotation the images were manually cat to 512x512 pixel patches using Fiji crop function, select `Image` > `Crop`. 
+
+
+Four deep-learning models where trained for following image channels LMX1A and TH aqcuired with Operetta CLS system, and HuNu and ChAT aqcuired with Leica microscope. 34 HuNu, 65 ChAT, 22 LMX1A and 38 TH images was annotated. 
+
+### Annotating images for StarDist
+The image annotations was created using [Labkit](https://imagej.net/plugins/labkit/) plugin in [Fiji](https://imagej.net/software/fiji/)
+
+1. Install [Fiji](https://imagej.net/software/fiji/) and  [Labkit](https://imagej.net/plugins/labkit/)
+2. Open the image patch and start Labkit. Select `Plugins` > `Segmentation` > `Labkit`
+3. Enable allow overlapping labels
+4. Add new label and annotate a cell
+5. Repeate step 4. until each cell is annotated
+6. Export labelling, select `Save Labeling..` > `File format` > `TIF Image`
+
+### StarDist model training
+
+
+
+
+The SIMPLIcity HuNu model was trained from scratch using the training script provided by Stardist. The training was done in Kebnekaise HPC server. 
 
 
 1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
