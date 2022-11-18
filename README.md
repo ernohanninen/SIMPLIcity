@@ -211,6 +211,7 @@ File that contains the metadata for cell identification.  By default this file i
 These instructions concerns both web-app and command-line usage. Even though the web-app validates user input, it is not completely robust for user mistakes.
 - Do not use whitespaces in input. For example file named `graft3 no2.tiff` will lead to error.
 - In input atleast following punctation marks are allowed `+`, `_`. In cell_type_for_intensity field `/` can be used. Do not use `-` or ` ` in naming.
+- All samples within each experimental setup, needs to contain the same marker.
 - The result of `Cell_Intensity_plotter.py` script, which plots pixel intensity distribution between two groups, have not been validated in detail.
 - The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. I is unknow if this function has negative impact to the analysis, therefore you should validate the results from the co-expression analysis. The image, containing cells expressing multiple markers,  from where the area and amount of co-expressing cells is computed is stored in the output folder. 
 - The web app doesn't contain all the features of SIMPLI. The clustering and spatial analysis of SIMPLI haven't been tested with the SIMPLIcity command-line tool.
@@ -301,7 +302,7 @@ python3 train.py
 sbatch runSbatch.sh
 ```
 
-- The trained model copied to local computed for further inspection
+- Copy the trained model to local computer for further inspection and use.
 
 ### ZeroCostDL4Mic transfer learning
 The HuNu and LMX1A models was used as pretrained models for training ChAT- and LMX1A_TH-model. Here the [script](https://github.com/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/StarDist_2D_ZeroCostDL4Mic.ipynb) provided by ZeroCostDL4Mic was used.
@@ -314,8 +315,7 @@ In addition to using custom model names, we adjusted the following parameters:
 | Model  | Learning rate | Batch size | Epochs | Steps | Dropout |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ---------- |
 | ChAT_model  | 0.001  | 16  | 50 | 20  | 0.0  |
-| LMX1A_TH_
-model  | 0.001  | 10  | 70 | 30  | 0.4  |
+| LMX1A_TH_model  | 0.001  | 10  | 70 | 30  | 0.4  |
 
 - The script was named transfer_learning.py and the training was started with following command:
 ```
@@ -323,7 +323,50 @@ python3 transfer_learning.py
 ```
 
 
-The SIMPLIcity HuNu model was trained from scratch using the training script provided by Stardist. The training was done in Kebnekaise HPC server. 
+## Creating docker images
+The dependencies of SIMPLIcity's image analysis pipeline are managed in three different docker images, two of these created in the project. The one, that wasn't created is Ubuntu image, which contains Linux operating system. Two separate docker images for R and Python dependencies was created, using following workflow:
+
+1. Navigate to folder where Dockerfile (recipe to create the image) is located, here using Python image as example:
+```
+~/SIMPLIcity/Docker/Python_recipe
+```
+2. Build the docker image
+```
+docker build -t py_container .
+```
+3. Check that the process was succesfull:
+```
+docker images
+```
+4. Check that the process was succesfull:
+```
+docker images
+```
+Output:
+```
+REPOSITORY                 TAG       IMAGE ID       CREATED          SIZE
+py_container               latest    8b0855be67d0   32 seconds ago   3.86GB
+```
+5. To be able to push the created docker image to docker hub, a database where docker images are stored, the image needs to be tagged:
+```
+docker tag 8448fbd398b5 ernohanninen/py_container:latest
+```
+Now the local docker repo looks like this:
+```
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+ernohanninen/py_container   latest    8448fbd398b5   4 minutes ago    2.4GB
+```
+6. To push a image to docker hub, log in:
+```
+docker login --username=user
+```
+7. Push the image to docker hub:
+```
+docker push ernohanninen/py_container
+```
+Same procedure was executed to the r_container
+When using these containers in SIMPLIcity, the images are pulled automatically from docker hub.
+
 
 
 1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
