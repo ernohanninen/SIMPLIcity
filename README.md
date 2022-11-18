@@ -160,12 +160,12 @@ Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameter
 - `sd_prob_thresh` = probability threshold used to segment cells: 0 < value < 1. Higher values leads to fewer segmented objects.
 - `sd_nms_thresh` = threshold above which Non-Maximum Suppression is performed: 0 < value < 1. Higher values allows objects to overlap more substantially.
 
-###### Pixel analysis settings
+##### Pixel analysis settings
 - `params.co_expression_fraction` =  The threshold fraction to identify cell overlapping other cell (co-expression). 0 < value < 1.
 - `params.cell_type_to_measure_area` = Comma separated list of cells used to measure area or co-expression. For example: "cell1,cell2,cell3,cell1/cell2" computes area and number of cell1, cell2 and cell3 and in addition the amount of cell1 which are also cell2 (co-expression). Here the `co_expression_fraction` is used to detect the overlapping cells.
 - `params.cell_type_for_intensity` = `cell_type_for_intensity` should match threshold one `cell_type` cell_masking_metadata.csv file. 
 
-###### Permutation analysis
+##### Permutation analysis
 Even though the permutation analysis is not tested in SIMPLIcity, the parameter needs to be initialized
 
 `params.permutations` = null
@@ -180,6 +180,7 @@ User specified colors for UMAP visualization. These needs to specified even thou
 ##### Output
 - `output_folder` = Specifies the path where all output of SIMPLIcity is stored
 - `tiff_type` = `single`, the pipeline has been tested only with single channel images 
+
 
 
 
@@ -208,10 +209,15 @@ File that contains the metadata for cell identification.  By default this file i
 
 #### SIMPLIcity tips and limitations
 These instructions concerns both web-app and command-line usage. Even though the web-app validates user input, it is not completely robust for user mistakes.
-- Do not use whitespaces in input. For file named `graft3 no2.tiff` will lead to error.
-- In input atleast following punctation marks are allowed `+`, `_`. In cell_type_for_intensity field `/` can be used. Do not use `-` in naming.
+- Do not use whitespaces in input. For example file named `graft3 no2.tiff` will lead to error.
+- In input atleast following punctation marks are allowed `+`, `_`. In cell_type_for_intensity field `/` can be used. Do not use `-` or ` ` in naming.
 - The result of `Cell_Intensity_plotter.py` script, which plots pixel intensity distribution between two groups, have not been validated in detail.
-- The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. I is unknow if this function has negative impact to the analysis, therefore you should validate the results from the co-expression analysis. The image, containing cells expressing multiple markers,  that is used to compute the area and amount of co-expressing cells is stored in output folder. 
+- The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. I is unknow if this function has negative impact to the analysis, therefore you should validate the results from the co-expression analysis. The image, containing cells expressing multiple markers,  from where the area and amount of co-expressing cells is computed is stored in the output folder. 
+- The web app doesn't contain all the features of SIMPLI. The clustering and spatial analysis of SIMPLI haven't been tested with the SIMPLIcity command-line tool.
+
+
+
+## Import images from Operetta CLS system
 
 
 1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
