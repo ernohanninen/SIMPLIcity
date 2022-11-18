@@ -253,7 +253,9 @@ To train deep-learning model images with their corresponding masks are required,
 
 Four deep-learning models where trained for following image channels LMX1A and TH aqcuired with Operetta CLS system, and HuNu and ChAT aqcuired with Leica microscope. 34 HuNu, 65 ChAT, 22 LMX1A and 38 TH images was annotated. 
 
-### Annotating images for StarDist
+For model training install the [StarDist dependencies](https://github.com/stardist/stardist#installation) 
+
+### Annotating images for StarDist and ZeroCostDL4Mic
 The image annotations was created using [Labkit](https://imagej.net/plugins/labkit/) plugin in [Fiji](https://imagej.net/software/fiji/)
 
 1. Install [Fiji](https://imagej.net/software/fiji/) and  [Labkit](https://imagej.net/plugins/labkit/)
@@ -265,6 +267,7 @@ The image annotations was created using [Labkit](https://imagej.net/plugins/labk
 
 ### StarDist model training
 To train the HuNu and LMX1A deep-learning image segmentation model we used a [script](https://nbviewer.org/github/stardist/stardist/blob/master/examples/2D/2_training.ipynb) provided by stardist.
+- For HuNu-model the annotated HuNu patches were used and for LMX1A model the annotated LMX1A patches were used.
 In addition to using custom model names, we adjusted the following parameters:
 - `quick_demo` = false
 - Regarding the hyperparameters, the best performing model was trained with the following parameters (if the parameter is not defined in the table, default value was used):
@@ -302,7 +305,7 @@ sbatch runSbatch.sh
 
 ### ZeroCostDL4Mic transfer learning
 The HuNu and LMX1A models was used as pretrained models for training ChAT- and LMX1A_TH-model. Here the [script](https://github.com/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/StarDist_2D_ZeroCostDL4Mic.ipynb) provided by ZeroCostDL4Mic was used.
-
+- For ChAT-model the annotated ChAT patches were used and for LMX1A_TH-model the annotated LMX1A and TH patches were used.
 In addition to using custom model names, we adjusted the following parameters:
 - For ChAT model the pretrained model used was HuNu and for LMX1A model the pretrained model used was LMX1A
 - For ChAT model 25 % of the input data was used for validation set, and for LMX1A_TH model 35 %
@@ -314,7 +317,10 @@ In addition to using custom model names, we adjusted the following parameters:
 | LMX1A_TH_
 model  | 0.001  | 10  | 70 | 30  | 0.4  |
 
-
+- The script was named transfer_learning.py and the training was started with following command:
+```
+python3 transfer_learning.py
+```
 
 
 The SIMPLIcity HuNu model was trained from scratch using the training script provided by Stardist. The training was done in Kebnekaise HPC server. 
