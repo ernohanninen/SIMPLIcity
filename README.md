@@ -183,12 +183,19 @@ Contains all samples used in the analysis. By default this file is named sample_
 - `comparison column`: Each sample is associated a category name. To exclude a sample from the comparison, set its field to "NA". Pairwise comparisons will be made only if there are two category names among samples ("NA" excluded).
 
 ##### Tiff image metadata file
-File which contains the images and their metadata for each sample. One sample can contain several image channels. SIMPLIcity has been tested with images containing max three image channels. SIMPLIcity has not been tested with RGB images. By default this file is named tiff_input_metadata.csv and the following fields are requried:
+File that contains the images and their metadata for each sample. One sample can contain several image channels. SIMPLIcity has been tested with images containing max three image channels. SIMPLIcity has not been tested with RGB images. By default this file is named tiff_input_metadata.csv and the following fields are requried:
 - `sample_name`: Identifier to be used to refer to this sample in the analysis, should correspond sample in sample metadata file. Note, the markers among samples should match.
 - `marker`: Marker associated to the channel.
 - `label`: Label used to name the channel in the analysis.
 - `file_name`: Input file path.
 - `thresholding`: Thresholding algorithm to be used to threshold the input tiff. The value needs to be one of the following thresholding algorithms:`sauvola`, `isodata`, `li`, `mean`, `minimum`, `otsu`, `triangle`, or `yen`.
+
+##### Cell masking metadata file
+File that contains the metadata for cell identification.  By default this file is named cell_masking_metadata.csv and the following fields are requried:
+- `cell_type` = name of the cell type to be identified.
+- `threshold_marker` = Marker corresponding the cell type. Should correspond one of the labels in ¸tiff_input_metadata¸ file.
+- `threshold_value` = 1 - fraction of area overlap between the segmented object and the thresholded image. Object is classified as a cell, if it overlaps the mask by fraction higher than threshold marker. Higher threshold value leads to more objects classified as cells. Values between 0-1 or NA to classify all segmented objects to cells.
+- `color` = Color used to represent this cell type in images.
 
 
 
