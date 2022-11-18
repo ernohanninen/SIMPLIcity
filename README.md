@@ -59,9 +59,15 @@ yarn start
 You should now find the app from browser by typing: http://localhost:3000/
 
 
+
+The web-page contains instruction how to fill the input fields. Additional information of the input fields can be found from [nextflow configuration file](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file), [SIMPLIcity metadata files](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) and  [SIMPLIcity tips and limitations](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-tips-and-limitations)
+
+
 ### Command-line
-To run the pipeline from command line, follow these instructions.
+To run the pipeline from command line, follow these instructions. 
 For command line usage [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
+
+The Nextflow configuration file and SIMPLIcity metadata files contains testing data. Threfore it is possible to test the pipeline without editing the cofiguration or metadata files.
 
 1. To run the pipeline, navigate to folder where main.nf file is located
 ```
@@ -74,6 +80,9 @@ nextflow run main.nf -c run/run_simplicity.config
 
 #### Nextflow configuration file
 Parameters to SIMPLIcity are specified in nextflow configuartion file. Some of the SIMPLI features are not tested in SIMPLIcity, hence those are not described in here in detail. Regarding those processes, see the [documentation to run SIMPLI](https://github.com/ciccalab/SIMPLI/wiki/Run#simpli-parameters) 
+
+
+To fill the configuration file for SIMPLIcity use the provided [template](https://github.com/ernohanninen/SIMPLIcity/tree/master/SIMPLI/run/scripts/run_simplicity.config).
 
 
 
@@ -197,6 +206,12 @@ File that contains the metadata for cell identification.  By default this file i
 - `threshold_value` = 1 - fraction of area overlap between the segmented object and the thresholded image. Object is classified as a cell, if it overlaps the mask by fraction higher than threshold marker. Higher threshold value leads to more objects classified as cells. Values between 0-1 or NA to classify all segmented objects to cells.
 - `color` = Color used to represent this cell type in images.
 
+#### SIMPLIcity tips and limitations
+These instructions concerns both web-app and command-line usage. Even though the web-app validates user input, it is not completely robust for user mistakes.
+- Do not use whitespaces in input. For file named `graft3 no2.tiff` will lead to error.
+- In input atleast following punctation marks are allowed `+`, `_`. In cell_type_for_intensity field `/` can be used. Do not use `-` in naming.
+- The result of `Cell_Intensity_plotter.py` script, which plots pixel intensity distribution between two groups, have not been validated in detail.
+- The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. I is unknow if this function has negative impact to the analysis, therefore you should validate the results from the co-expression analysis. The image, containing cells expressing multiple markers,  that is used to compute the area and amount of co-expressing cells is stored in output folder. 
 
 
 1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
