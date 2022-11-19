@@ -1,4 +1,2 @@
 sample_name,marker,label,file_name,thresholding
-S1,HuNu,HuNu,/home/ernohanninen/simpli_project/App/run/raw_tiff/sample_1-HuNu1-Preprocessed_patch6.tif,Minimum
-S2,HuNu,HuNu,/home/ernohanninen/simpli_project/App/run/raw_tiff/sample_1-HuNu1-Preprocessed_patch9.tif,Minimum
-S3,HuNu,HuNu,/home/ernohanninen/simpli_project/App/run/raw_tiff/sample_1-HuNu32-Preprocessed_patch15.tif,Minimum
+S1,HuNu,HuNu,/home/ernohanninen/SIMPLIcity/App/run/raw_tiff/th_patch2.tif,Minimum

@@ -1,29 +1,49 @@
+/*
+Title: image_thresholding.js
+Date: 2021-10-06
+Author: Erno Hänninen
+Description:
+  - This script can be used to test the available trehsholding algorithms 
+  
+
+Procedure:
+ - Takes input image
+ - Sends request to the backend, which runs the thresholding algorithm implemented in the pipeline
+ - Displays the original image and thresholded images to the user
+
+
+
+*/
+
+//Import modules and css
 import React, { useState } from 'react';
 import "./App.css";
 import axios from "axios";
 
 
-
 export default function Thresholding()  {
+    //state variables
     const [image, setImage] = useState()
     const [thresholdedImages, setThresholdedImages] = useState()
+
+    //Function which sends request to the backend to run the thresholding algorighms
     const runThresholding = () => {
 
+        //Display and hide elements
         document.getElementById("submitImage").style.display = "none"
         document.getElementById("running").style.display = "block"
 
+        //Prepare for request
         const formData = new FormData()
-        console.log(image.files)
         formData.append("image", image)
-        console.log(image)
         const url = '/thresholdImage';
-        axios.post(url, formData)
+        axios.post(url, formData) //Axios request
             .then((response) =>{
                 if(response.data=="error"){ //If error
                     console.log("########ERROR########")
                 }
                 else{ //IF everyting okay
-                    console.log(response)
+                    //Parse the response data
                     let original_img = response.data["original_image"]
                     let min_thresh = response.data["min_thresh"]
                     let otsu_thresh = response.data["otsu_thresh"]
@@ -34,24 +54,18 @@ export default function Thresholding()  {
                     let isodata_thresh  =response.data["isodata_thresh"]
                     let mean_thresh = response.data["mean_thresh"]
 
+                    //Call the function
                     displayImages(original_img, min_thresh, otsu_thresh, sau_thresh, yen_thresh, li_thresh, triangle_thresh, isodata_thresh, mean_thresh) //Calling function which displays the images     
-                    
+                    //Hide elements
                     document.getElementById("running").style.display = "none"
                 }
         });      
 
+        //Functions which displays the thresholded and the original images
         const displayImages = (original_img, min_thresh, otsu_thresh, sau_thresh, yen_thresh, li_thresh, triangle_thresh, isodata_thresh, mean_thresh) => { 
-            
-            console.log(original_img)
-            console.log("../src/images/" + original_img)
-            console.log("../src/images/" + min_thresh)
-            console.log("../src/images/" + otsu_thresh)
-            console.log("../src/images/" + sau_thresh)
-            console.log("../src/images/" + yen_thresh)
-            
 
-            //src/images/test_thresholding/original_image.png
-            //Map samples and set the images to variable
+
+            //Set the images to a variable
             setThresholdedImages(
                 <div id="thresholdingResults" >
                     <div class="imageRow1">           
@@ -103,6 +117,9 @@ export default function Thresholding()  {
             )
 
         }
+
+        //Function which displays the images fullscreen when clicked the image
+        //This function is also used to exit the fullscreen
         const displayFullScreen = (id) => { 
             let elem = document.getElementById(id)
             if(document.fullscreenElement){
@@ -123,10 +140,12 @@ export default function Thresholding()  {
         
 
     }
+    //THe html element which is rendered to user
     return( 
     <div>
         <form>
         <div id="submitImage">
+            <p>Module to test the outcome of different thesholding algorithms:</p>
             <div class="row">            
                 <label for="tiff">Load tiff: &nbsp;</label>
                 <input name="tiff" type = "file" onChange={(e)=>setImage(e.target.files[0])} />
@@ -138,9 +157,6 @@ export default function Thresholding()  {
         <div id = "running" hidden>
             <p>Running thresholding algorithms</p>
         </div>
-
-       
-        
         
         </form>
         {thresholdedImages}

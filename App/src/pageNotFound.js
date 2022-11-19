@@ -1,3 +1,12 @@
+
+/*
+Title: navbar.js
+Date: 2021-20-09
+Author: Erno Hänninen
+Description:
+  - Displays page not found if url which doesn't exists is submitted
+*/
+
 import React from "react";
 import "./App.css";
 

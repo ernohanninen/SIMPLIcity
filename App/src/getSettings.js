@@ -1,47 +1,60 @@
+/*
+Title: getSettings.js
+Date: 2021-09-01
+Author: Erno Hänninen
+Description:
+  - Second page of the app 
+  - Here the image analysis processes to be executed are selected
+
+Procedure:
+ - Select the imaging platform
+ - Select processes to run
+ - Click next to proceed
+ - Or remove to get back to the sample page
+
+
+*/
+
+//import libraries and css file
 import React,  { useState, forwardRef, useImperativeHandle } from 'react';
 import axios from "axios";
 import './App.css';
-//import App from "./App.js"
 
-
+//Function which is called by clicking the next button of submit sample page
 const GetSettings = forwardRef((props, ref)=>{
 //function GetSettings(){
 
+    //State variables
     const [instrument, setInstrument] = useState("");
-
     const [area, setArea] = useState(false);
     const [segmentation, setSegmentation] = useState(false);
     const [identification, setIdentification] = useState(false);
     const [intensity, setIntensity] = useState(false);
     const [cellArea, setCellArea] = useState(false);
-
-
     const [clustering, setClustering] = useState(false);
     const [thresholding, setThresholding] = useState(false);
     const [homoInteractions, setHomoInteractions] = useState(false);
     const [heteroInteractions, setHeteroInteractions] = useState(false);
     const [permutedInteractions, setPermutedInteractions] = useState(false);
-    const [th, setTh] = useState(false)
-    const [hunu, setHunu] = useState(false)
     
     useImperativeHandle(ref, ()=>({
-        submitSettings(){
-            
+        submitSettings(){ //function which submits the setting
+            //Create formdata which is the sended to the frontend
             const formData = new FormData()
+            //Collect the input data
             formData.append("instrument", instrument)
             formData.append("area", area)
             formData.append("segmentation", segmentation)
             formData.append("identification", identification)
             formData.append("intensity", intensity)
-            formData.append("cellArea", cellArea)
-            
+            formData.append("cellArea", cellArea)        
             formData.append("clustering", clustering)
             formData.append("thresholding", thresholding)
             formData.append("homoInteractions", homoInteractions)
             formData.append("heteroInteractions", heteroInteractions)
             formData.append("permutedInteractions", permutedInteractions)
             
-            console.log(formData)
+            //Using axios to send the formdata to frontend
             async function submitData(){
                 try {
                     let response = await axios({
@@ -56,31 +69,25 @@ const GetSettings = forwardRef((props, ref)=>{
                     console.log(err)
                 }
             }
-           
+        
             submitData()
             .then(function(response){
-
                 //Get the values from formData to more usable format
                 const newData = []   
                 let j = 0
                 for (const pair of formData.entries()) {
                 newData[pair[0]] = pair[1] 
-            
                 }
-            })
-                
-        
-            
-            
+            })    
         }
     }))
 
+    //Function which handels the changes in dropdown
     const handleChangeSelectInstrument = (event) => {
-         
         setInstrument(event.target.value)
-        
     }
 
+    //Show instruction box
     const showInstructions = event => {
         //setInfo()
         document.getElementById("instructionsSettings").style.display="block"
@@ -88,6 +95,7 @@ const GetSettings = forwardRef((props, ref)=>{
         document.getElementById("hideInfoBtnSettings").style.display="block"    
       }
     
+      //Hide instruction box
       const hideInstructions = event =>{
         document.getElementById("instructionsSettings").style.display="none"
         document.getElementById("infoBtnSettings").style.display="block"
@@ -95,6 +103,7 @@ const GetSettings = forwardRef((props, ref)=>{
       }
 
 
+    //The HTML elements which are rendered to the user
     return(
     <div>
 
@@ -211,11 +220,11 @@ const GetSettings = forwardRef((props, ref)=>{
             <div hidden id="instructionsSettings" class="textarea-container">    
               <p disabled readonly rows="20" cols="50">
                 <b>Instructions:<br></br><br></br></b>
-                <b>Image acquisition platform: </b>If "Operetta" is selected as image acquisition platform the images are normalized, if "Other" is selected the images are noramlized, denoised and the contrast is adjusted<br></br> 
+                <b>Image acquisition platform: </b>If "Operetta" is selected as image acquisition platform the images are not processed, if "Brightfield" is selected the images are noramlized, denoised and the contrast is adjusted<br></br> 
                 <b>Image segmentation: </b>Deep learning segmentation. Cells from the background are segmented.<br></br>
                 <b>Cell type identification: </b>Identifies cells belonging to different populations or tissue compartments according to their overlap with regions of interest in the thresholded image.<br></br>
                 <b>Cell intensity measurements: </b>Computes pixel intensity distribution of segmented cells between two different groups.<br></br>
-                <b>Cell area measurements: </b>Computes pixel counts of segmented cells. Enables analysis of cells expressing several markers<br></br>
+                <b>Cell area measurements: </b>Computes pixel counts and number of segmented cells. Enables analysis of cells expressing several markers.<br></br>
               </p>        
         </div>
             
@@ -230,5 +239,4 @@ const GetSettings = forwardRef((props, ref)=>{
     )
 })
 export default GetSettings;
- //      <App callparentFunction={()=>handleSettingsSubmit}/>
 

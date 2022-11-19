@@ -3,7 +3,7 @@ import "./App.css";
 
 export default function About()  {
    
-    return <div>About page</div>;
+    return <div>SIMPLIcity info page</div>;
 }
 
 

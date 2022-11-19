@@ -1,0 +1,5 @@
+sample_name,marker,label,file_name,thresholding
+S1,LMX,LMX,../../../run/Data/lmx_patch1.tif,Triangle
+S1,TH,TH,../../../run/Data/th_patch1.tif,Triangle
+S2,LMX,LMX,../../../run/Data/lmx_patch2.tif,Triangle
+S2,TH,TH,../../../run/Data/th_patch2.tif,Triangle

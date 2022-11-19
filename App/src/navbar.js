@@ -1,4 +1,11 @@
-//The navbar.js and Navbar.css is from https://github.com/DevLHB/navbar-app
+
+/*
+Title: navbar.js
+Date: 2021-20-09
+Author: Erno Hänninen
+Description:
+  - Contains the navbar for the app
+*/
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
