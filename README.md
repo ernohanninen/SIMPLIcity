@@ -1,12 +1,9 @@
 # SIMPLIcity
 
-<<<<<<< HEAD
 ## Motivation
 SIMPLIcity is a pipeline built upon [SIMPLI](https://github.com/ciccalab/SIMPLI). With the custom image pre-processing step, three pre-trained image segmentation models, two external image-analysis scripts, and user-interface SIMPLIcity overcomes the limitations we explored in the original SIMPLI. SIMPLIcity contains three pre-trained StarDist models for the following markers HuNu, ChAT, and a comprehensive model covering both LMX and TH image channels. SIMPLIcity can be used both as a command-line tool and via a web-based user interface.
 
 It is recommended to use SIMPLIcity from the web-based user interface, as it can better handle mistakes made by the user. In case features of SIMPLI, which are not implemented in the user interface or tested in SIMPLIcity, are explored, use the SIMPLcity command-line approach.
-=======
->>>>>>> refs/remotes/origin/master
 
 
 
@@ -22,20 +19,11 @@ Install the following dependencies:
 For Nextflow version >= 20.07.1 is required. Installation of Nextflow requires Java 11 (or later, up to 18) to be installed.
 
 ### Installation of SIMPLIcity
-<<<<<<< HEAD
 1. Clone the repo:
 ```
 git clone git@github.com:ernohanninen/SIMPLIcity.git
 ```
 2. Create the conda environment
-=======
-1. Clone the repo
-```
-git clone git@github.com:ernohanninen/SIMPLIcity.git
-```
-2. Create the conda env
-Run:
->>>>>>> refs/remotes/origin/master
 ```
 conda create --name APPenv
 ```
@@ -43,7 +31,6 @@ conda create --name APPenv
 ```
 conda activate APPenv
 ```
-<<<<<<< HEAD
 4. Add anaconda channel to the conda:
 ```
 conda config --env --add channels anaconda
@@ -53,9 +40,6 @@ conda config --env --add channels anaconda
 conda config --env --add channels conda-forge
 ```
 6. Install packages to the environment:
-=======
-4. Install packages
->>>>>>> refs/remotes/origin/master
 ```
 conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkzeug=2.1.1 pillow scikit-image numpy opencv flask-restful=0.3.9
 ```
@@ -67,7 +51,6 @@ conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkze
 To run the pipeline from web-based user-interface follow these instructions.
 1. Navigate to the App folder
 ```
-<<<<<<< HEAD
 cd ~/SIMPLIcity/SIMPLIcity/App
 ```
 2. If the conda environment is not activated in the terminal window, activate it:
@@ -85,21 +68,6 @@ flask run
 conda activate APPenv
 ```
 6. Run yarn (starts the react app). 
-=======
-cd simpli_project/SIMPLIcity
-```
-2. Now we can start the app. Run flask (takes care of the communication between frontend and backend):
-```
-flask run
-```
-3. Open a new terminal window (let the flask run on it's terminal own window)
-
-4. You should be in /simpli_project/App folder, if not navigate there. Activate conda environment on new window: 
-```
-conda activate APPenv
-```
-5. Run yarn (starts the react app). 
->>>>>>> refs/remotes/origin/master
 ```
 yarn start
 ```
@@ -112,7 +80,6 @@ The web-page contains instruction how to fill the input fields. Additional infor
 
 ### Command-line
 To run the pipeline from command line, follow these instructions. 
-<<<<<<< HEAD
 For command line usage [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up. 
 
 The Nextflow configuration file and SIMPLIcity metadata files contains testing data. Threfore it is possible to test the pipeline without editing the configuration or metadata files.
@@ -120,15 +87,6 @@ The Nextflow configuration file and SIMPLIcity metadata files contains testing d
 1. To run the pipeline, navigate to folder where main.nf file is located
 ```
 cd ~/SIMPLIcity/SIMPLIcity/
-=======
-For command line usage [nextflow configuration](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file) file and [SIMPLIcity metadata](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) files needs to be set up.
-
-The Nextflow configuration file and SIMPLIcity metadata files contains testing data. Threfore it is possible to test the pipeline without editing the cofiguration or metadata files.
-
-1. To run the pipeline, navigate to folder where main.nf file is located
-```
-cd ~/simpli_project/SIMPLIcity/
->>>>>>> refs/remotes/origin/master
 ```
 2. Run the pipeline
 ```
@@ -136,11 +94,7 @@ nextflow run main.nf -c run/run_simplicity.config
 ```
 
 #### Nextflow configuration file
-<<<<<<< HEAD
 Parameters to SIMPLIcity are specified in nextflow configuartion file. Some of the SIMPLI features are not tested in SIMPLIcity, therefore those features are not described in detail. More information of those processes, see the [documentation to run SIMPLI](https://github.com/ciccalab/SIMPLI/wiki/Run#simpli-parameters) 
-=======
-Parameters to SIMPLIcity are specified in nextflow configuartion file. Some of the SIMPLI features are not tested in SIMPLIcity, hence those are not described in here in detail. Regarding those processes, see the [documentation to run SIMPLI](https://github.com/ciccalab/SIMPLI/wiki/Run#simpli-parameters) 
->>>>>>> refs/remotes/origin/master
 
 
 To fill the configuration file for SIMPLIcity use the provided [template](https://github.com/ernohanninen/SIMPLIcity/tree/master/SIMPLI/run/scripts/run_simplicity.config).
@@ -148,15 +102,9 @@ To fill the configuration file for SIMPLIcity use the provided [template](https:
 
 
 ##### Input
-<<<<<<< HEAD
 Specify the path to the metadata files containing input samples and images.
-- `params.sample_metadata_file` = Metadata file containing the samples used in analysis.
-- `params.tiff_input_metadata_file` = Metadata file for single-channel TIFF input image.
-=======
-Path to the metadata files containing input samples and images.
 - `sample_metadata_file` = Metadata file containing the samples used in analysis.
 - `tiff_input_metadata_file` = Metadata file for single-channel TIFF input image.
->>>>>>> refs/remotes/origin/master
 
 ##### Imaging platform
 
@@ -164,36 +112,11 @@ Path to the metadata files containing input samples and images.
 
 ##### Selection of analysis processes to run
 
-<<<<<<< HEAD
 Specify the processes to skip using either `true` or `false` as values. The processes which aren't executable/tested on SIMPLIcity are initialized to `true` in here, and threfore should be skipped.
-- `params.skip_conversion` = `true`
-- `params.skip_normalization` = Do not perform image channel normalization. Set this `true` if `params.instrument_operetta` is `true`.
-- `params.skip_preprocessing` = If `instrument_operetta` = `false`, do not perform image denoising, contrast enhancement, and image thresholding for images.  If `instrument_operetta` = `true`, do not perform image thresholding. 
-- `params.skip_area` = `true`
-- `params.skip_cp_segmentation` = `true`
-- `params.skip_sd_segmentation` = Do not perform deep-learning based cell segmentation with StarDist.
-- `params.skip_cell_type_identification` = Do not perform cell type identification.
-- `params.skip_cell_area_measurements` = Do not identify co-expressing cells or measure cell area of specified cell type.
-- `params.skip_cell_clustering` = `true`
-- `params.skip_cell_thresholding` = `true`
-- `params.skip_homotypic_interactions` = `true`
-- `params.skip_heterotypic_interactions` = `true`
-- `params.skip_permuted_interactions` = `true`
-- `params.skip_visualization` = Do not perform any of the following visualization steps.
-- `params.skip_area_visualization` = `true`
-- `params.skip_type_visualization` = Do not plot the results of the cell type identification.
-- `params.skip_intensity_visualization` = Do not perform measure and visualize pixel intensity distribution between two groups. To plot pixel distribution between two groups make sure there are two comparison groups in sample metadata file.
-- `params.skip_cluster_visualization` = `true`
-- `params.skip_thresholding_visualization` = `true`
-- `params.skip_homotypic_visualization` = `true`
-- `params.skip_heterotypic_visualization` = `true`
-- `params.skip_permuted_visualization` = `true`
-=======
-Specify the processes to skip using either `true` or `false` as values. The processes which aren't executable/tested on SIMPLIcity are initialized to `true`, and threfore should be skipped
 - `skip_conversion` = `true`
-- `skip_normalization` = Do not perform image channel normalization. When using images aqcuired with Operetta CLS system, set `true`.
+- `skip_normalization` = Do not perform image channel normalization. Set this `true` if `params.instrument_operetta` is `true`.
 - `skip_preprocessing` = Do not perform image denoising and contrast enhancement
-- `skip_area` = Do not perform thresholding based pixel-level analysis.
+- `skip_area` = `true`
 - `skip_cp_segmentation` = `true`
 - `skip_sd_segmentation` = Do not perform deep-learning based cell segmentation with StarDist.
 - `skip_cell_type_identification` = Do not perform cell type identification.
@@ -212,52 +135,11 @@ Specify the processes to skip using either `true` or `false` as values. The proc
 - `skip_homotypic_visualization` = `true`
 - `skip_heterotypic_visualization` = `true`
 - `skip_permuted_visualization` = `true`
->>>>>>> refs/remotes/origin/master
 
 
 ##### Process specific metadata files
 
 Path to files which contains user-specified settings for the processes. The files which are for processes not tested in SIMPLIcity are initialized to `null`.
-<<<<<<< HEAD
-- `params.area_measurements_metadata` = `null`
-- `params.cell_clustering_metadata` = `null`
-- `params.cell_thresholding_metadata` = `null`
-- `params.cell_masking_metadata` = Metadata file with the parameters for cell type identification.
-- `params.homotypic_interactions_metadata` = `null`
-- `params.heterotypic_interactions_metadata` = `null`
-
-##### Step specific metadata files
-SIMPLI allows users to skip processes and instead enables users to supply the output data of a processs. However, this functionality is not tested in SIMPLIcity, therefore these parameters are initialized to `null`. However if for example preprocessing is skiped, the user should  provide the `preprocessed_metadata_file`.
-- `params.raw_metadata_file` = `null`
-- `params.channel_metadata` = `null`
-- `params.normalized_metadata_file` = `null`
-- `params.preprocessed_metadata_file` = `null`
-- `params.area_measurements` = `null`
-- `params.single_cell_data_file` = `null`
-- `params.annotated_cell_data_file` = `null`
-- `params.clustered_cell_data_file` = `null`
-- `params.thresholded_cell_data_file` = `null`
-- `params.homotypic_interactions_file` = `null`
-- `params.heterotypic_interactions_file` = `null`
-- `params.single_cell_masks_metadata` = `null`
-- `params.shuffled_interactions_file` = `null`
-
-##### CellProfiler4 pipelines
-Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameters needs to be initialized.
-- `params.cp4_preprocessing_cppipe` = `null`
-- `params.cp4_segmentation_cppipe` = `null`
-
-##### StarDist segmentation settings
-- `params.sd_labels_to_segment` = comma separated list of labels to include in the multichannel image used for segmentation. The labels much match the labels in tiff_input_metadata file. For example: "label1,label2"
-- `params.sd_model_name` = name of the model to use, either `HuNu`, `ChAT` or `LMX` for LMX_TH model.
-- `params.sd_model_path` = path to the model to use or "default" for the models included with StarDist. If model is stored in /home/user/SIMPLIcity/SIMPLIcity/run/models the value is `"/opt/models/"` 
-- `params.sd_prob_thresh` = probability threshold used to segment cells: 0 < value < 1. Higher values leads to fewer segmented objects.
-- `params.sd_nms_thresh` = threshold above which Non-Maximum Suppression is performed: 0 < value < 1. Higher values allows objects to overlap more substantially.
-
-##### Pixel analysis settings
-- `params.co_expression_fraction` =  The threshold fraction to identify cell overlapping other cell (co-expression). 0 < value < 1.
-- `params.cell_type_to_measure_area` = Comma separated list of cells used to measure area or co-expression. For example: "cell1,cell2,cell3,cell1/cell2" computes area and number of cell1, cell2 and cell3 and in addition the amount of cell1 which are also cell2 (co-expression). Here the `params.co_expression_fraction` is used to detect the overlapping cells.
-=======
 - `area_measurements_metadata` = `null`
 - `cell_clustering_metadata` = `null`
 - `cell_thresholding_metadata` = `null`
@@ -288,7 +170,7 @@ Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameter
 
 ##### StarDist segmentation settings
 - `sd_labels_to_segment` = comma separated list of labels to include in the multichannel image used for segmentation. The labels much match the labels in tiff_input_metadata file. For example: "label1,label2"
-- `sd_model_name` = name of the model to use
+- `sd_model_name` = name of the model to use, either
 - `sd_model_path` = path to the model to use or "default" for the models included with StarDist. If model is stored in /home/user/SIMPLIcity/SIMPLIcity/run/models the value is `"/opt/models/"` 
 - `sd_prob_thresh` = probability threshold used to segment cells: 0 < value < 1. Higher values leads to fewer segmented objects.
 - `sd_nms_thresh` = threshold above which Non-Maximum Suppression is performed: 0 < value < 1. Higher values allows objects to overlap more substantially.
@@ -296,7 +178,6 @@ Even though CellProfiler4 dependencies is removed from SIMPLIcity, the parameter
 ##### Pixel analysis settings
 - `params.co_expression_fraction` =  The threshold fraction to identify cell overlapping other cell (co-expression). 0 < value < 1.
 - `params.cell_type_to_measure_area` = Comma separated list of cells used to measure area or co-expression. For example: "cell1,cell2,cell3,cell1/cell2" computes area and number of cell1, cell2 and cell3 and in addition the amount of cell1 which are also cell2 (co-expression). Here the `co_expression_fraction` is used to detect the overlapping cells.
->>>>>>> refs/remotes/origin/master
 - `params.cell_type_for_intensity` = `cell_type_for_intensity` should match threshold one `cell_type` cell_masking_metadata.csv file. 
 
 ##### Permutation analysis
@@ -307,15 +188,6 @@ Even though the permutation analysis is not tested in SIMPLIcity, the parameter 
 ##### Cell clustering visualization
 User specified colors for UMAP visualization. These needs to specified even though clustering is not executed.
 
-<<<<<<< HEAD
-- `params.high_color` = "'#FF0000'"
-- `params.mid_color` = "'#FFFFFF'"
-- `params.low_color` = "'#0000FF'"
-
-##### Output
-- `params.output_folder` = Specifies the path where all output of SIMPLIcity is stored
-- `params.tiff_type` = `single`, the pipeline has been tested only with single channel images 
-=======
 - `high_color` = "'#FF0000'"
 - `mid_color` = "'#FFFFFF'"
 - `low_color` = "'#0000FF'"
@@ -323,7 +195,6 @@ User specified colors for UMAP visualization. These needs to specified even thou
 ##### Output
 - `output_folder` = Specifies the path where all output of SIMPLIcity is stored
 - `tiff_type` = `single`, the pipeline has been tested only with single channel images 
->>>>>>> refs/remotes/origin/master
 
 
 
@@ -353,27 +224,17 @@ File that contains the metadata for cell identification.  By default this file i
 
 #### SIMPLIcity tips and limitations
 These instructions concerns both web-app and command-line usage. Even though the web-app validates user input, it is not completely robust for user mistakes.
-<<<<<<< HEAD
 - The SIMPLIcity web app contains a image thersholding module, which can be used to test different thresholding algorithms.
 - When default settings on submit sample page is not used, the used input is not validated for the thresholding algorithm field.
 - Do not use whitespaces in input. For example file named `graft3 no2.tiff` will lead to error.
 - In input atleast following punctation marks are allowed `+`, `_`. In cell_type_for_intensity field `/` can be used. Do not use `-` or ` ` in naming.
-- All samples within each experimental setup needs to contain the same markers.
+- All samples within each experimental setup, needs to contain the same marker.
 - The result of `Cell_Intensity_plotter.py` script, which plots pixel intensity distribution between two groups, have not been validated in detail.
-- SIMPLIcity supports only single channel images and the pipeline has been tested with samples containing 1-3 image channels.
-- The StarDist parameters for ChAT and LMX1A_TH model should be adjusted. For HuNu model we recommend using probability threshold 0.58 and overlap threshold 0.3. In the study for the LMX1A_TH model we used probability threshold 0.06 and overlap threshold 0.3.
-- An preprocessing step for images aqcuired with Operetta CLS system is needed.
+- SIMPLIcity supports only single channel images.
 - The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. It is unknow if this function has negative impact to the analysis, therefore users should validate the results from the co-expression analysis. The image, containing cells expressing multiple markers from where the area and amount of co-expressing cells is computed, is stored in the output folder. 
 - When running SIMPLIcity Cell area measurements from command line, only the pixel counts are stored to output file. Cell counts can be achieved, by parsing the annotated_cells.csv file from the output folder.
 - The CellProfiler4 pipelines are not usable in SIMPLI. However when filling the configuration files, the settings for CellProfiler4 needs to be specified.
 - The web app can throw an Error if the user makes something unexpected, in those cases it is recommended to refresh the page. 
-=======
-- Do not use whitespaces in input. For example file named `graft3 no2.tiff` will lead to error.
-- In input atleast following punctation marks are allowed `+`, `_`. In cell_type_for_intensity field `/` can be used. Do not use `-` or ` ` in naming.
-- All samples within each experimental setup, needs to contain the same marker.
-- The result of `Cell_Intensity_plotter.py` script, which plots pixel intensity distribution between two groups, have not been validated in detail.
-- The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. I is unknow if this function has negative impact to the analysis, therefore you should validate the results from the co-expression analysis. The image, containing cells expressing multiple markers,  from where the area and amount of co-expressing cells is computed is stored in the output folder. 
->>>>>>> refs/remotes/origin/master
 - The web app doesn't contain all the features of SIMPLI. The clustering and spatial analysis of SIMPLI haven't been tested with the SIMPLIcity command-line tool.
 
 
@@ -486,11 +347,7 @@ python3 transfer_learning.py
 ## Creating docker images
 The dependencies of SIMPLIcity's image analysis pipeline are managed in three different docker images, two of these created in the project. The one, that wasn't created is Ubuntu image, which contains Linux operating system. Two separate docker images for R and Python dependencies was created, using following workflow:
 
-<<<<<<< HEAD
 1. Navigate to folder where Dockerfile (recipe to create the image) is located, here using Python container as example:
-=======
-1. Navigate to folder where Dockerfile (recipe to create the image) is located, here using Python image as example:
->>>>>>> refs/remotes/origin/master
 ```
 ~/SIMPLIcity/Docker/Python_recipe
 ```
@@ -528,32 +385,6 @@ docker login --username=user
 ```
 docker push ernohanninen/py_container
 ```
-<<<<<<< HEAD
 Same procedure was executed to the r-container (the r-container was named r_container).
 SIMPLIcity pulls the images automatically from docker hub.
 
-=======
-Same procedure was executed to the r_container
-When using these containers in SIMPLIcity, the images are pulled automatically from docker hub.
-
-
-
-1. Submit the first sample by selecting sample name, comparison group and color (red or blue, some of the colors don't work). Then choose one of the LMX images from the Data folder and select the corresponding marker. Click "add new tiff" and add TH image. Click "submit sample".
-2. Add an other sample. Use unique sample name, USE A DIFFERENT comparison group than in sample1, select color. Then load the images you didn't use in sample1 and update the marker info. You should now have two samples with two markers in the table.
-3. Click next
-4. Select the source of images: Operetta
-5. Select following processes: Segmentation, identification, cell intensity (cell area measurements is still on progress so don't run this)
-6. Click next
-7. Select LMX model
-8. Fill the cell type identification: 
-   - Some of the colours don't work, so use green, blue, red or yellow 
-For example:
-   - cell name: LMX+ marker: LMX Threshold: anything between 0-1 or NA, color: red
-   - Add new cell type
-   - cell name: TH+ marker: TH Threshold: anything between 0-1 or NA, color: blue
-   
-9. To the intensity cell type add TH+
-10. Press run and wait
-11. The run shouldn't take more than 2 min.
-12. The app suppose to inform you about an error. 
->>>>>>> refs/remotes/origin/master
