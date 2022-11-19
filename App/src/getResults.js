@@ -1,3 +1,18 @@
+/*
+Title: getResults.js
+Date: 2021-09-03
+Author: Erno Hänninen
+Description:
+  - Result page of the app, diplays the results for user
+
+Procedure:
+ - Select the sample which you want to explore
+ - Explore the reults
+
+
+*/
+
+
 import React,  { useState, forwardRef, useImperativeHandle } from 'react';
 import axios from "axios";
 import './App.css';
@@ -26,12 +41,6 @@ const GetResults = () => {
     const [pixelSamplePlot, setPixelSamplePlot] = useState("")
     const [dropDownPixel, setDropDownPixels] = useState("")
     const [cellArea, setCellArea] = useState("")
-    
-    
-
-    
-    //const [displaySegmented, setDisplaySegmented] = useState(true)
-
     
     var sample = ""
     var marker = ""
@@ -96,6 +105,7 @@ const GetResults = () => {
             //Object.entries(cellAreaMeasurements).map(([key,value]) => { //Goes thru at sample level
             Object.entries(cellAreaMeasurements).map(([key, value]) => {
 
+                
                 var tableData = Object.entries(value).map(([key2,value2]) =>   //Goes thru at cell type level
                     <tr>
                         <td>{key2}</td>
@@ -103,6 +113,7 @@ const GetResults = () => {
                         <td>{value2["cell_counts"]}</td>
                     </tr>
                 )
+                
 
                 let id = "measurementsTable" + key
                 cellAreaList.push(
@@ -487,6 +498,12 @@ const GetResults = () => {
                     document.getElementById(idSegmentedDiv).style.display = "block"
                 }
 
+                let idMeasurements = "measurementsTable" + event.target.value
+
+                if(cellAreaExecuted == true){
+                    document.getElementById(idMeasurements).style.display = "block"           
+                }
+
             }
             
             //Creates the checkbox HTML element to each image
@@ -621,7 +638,7 @@ const GetResults = () => {
         <div>
             <form class="resultsForm" id="resultsForm">
                 <div hidden id="load">
-                    <p>Running SIMPLI</p>         
+                    <p>Running SIMPLIcity</p>         
                 </div>
                 
                 <div hidden id="results">  
