@@ -1,4 +1,4 @@
-#Source: https://github.com/ciccalab/SIMPLI/blob/master/scripts/Seurat_Runned.R
+#Source: https://github.com/ciccalab/SIMPLI/blob/master/scripts/Seurat_Runner.R
 #Code is from SIMPLI github page
 
 
