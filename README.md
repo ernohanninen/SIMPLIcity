@@ -1,9 +1,11 @@
 # SIMPLIcity
 
-## Motivation
-SIMPLIcity is a pipeline built upon [SIMPLI](https://github.com/ciccalab/SIMPLI). With the custom image pre-processing step, three pre-trained image segmentation models, two external image-analysis scripts, and user-interface SIMPLIcity overcomes the limitations explored in SIMPLI pipeline. SIMPLIcity contains three pre-trained StarDist models for the following markers HuNu, ChAT, and a comprehensive model covering both LMX and TH image channels. In addition the pretrained model 2D_versatile_fluo, provided by StarDist, is available in SIMPLIcity, and user's can utilize their own image segmentation models. SIMPLIcity can be used both as a command-line tool and via a web-based user interface.
+## Description
+SIMPLIcity is an image analysis tool built upon the comprehensive [SIMPLI](https://github.com/ciccalab/SIMPLI) pipeline. With the custom image pre-processing step, three pre-trained image segmentation models, two external image-analysis scripts, and user-interface SIMPLIcity overcomes the limitations explored in SIMPLI pipeline. SIMPLIcity contains three pre-trained StarDist models for the following markers HuNu, ChAT, and a comprehensive model covering both LMX and TH image channels. In addition, the pre-trained model 2D_versatile_fluo, provided by StarDist, is available in SIMPLIcity, and user's can even use their StarDist models. SIMPLIcity can be used both as a command-line tool and via a web-based user interface.
 
-SIMPLIcity pipeline contains image pre-processing, deep-learning image segmentation, cell type identification, pixel intensity distribution plotter, and cell-area measurements, which allows co-expression analysis up to three markers. The clustering and spatial analysis implemented in SIMPLI, hasn't been tested in SIMPLIcity nor implemented in the web-app.
+SIMPLIcity pipeline contains image pre-processing, deep-learning image segmentation, cell type identification, pixel intensity distribution plotter, and cell-area measurements, which allow co-expression analysis of up to three markers. The clustering and spatial analysis implemented in SIMPLI, haven't been tested in SIMPLIcity nor implemented in the web app.
+
+![alt text](https://github.com/ernohanninen/SIMPLIcity/blob/master/Assets/fig0.png)
 
 It is recommended to use SIMPLIcity from the web-based user interface, as it can better handle mistakes made by the user. In case features of SIMPLI, which are not implemented in the user interface or tested in SIMPLIcity, are explored, use the SIMPLcity command-line approach.
 
@@ -46,6 +48,9 @@ conda config --env --add channels conda-forge
 conda install nodejs=16.13.1 yarn=0.25.2 python-dotenv=0.20.0 flask=2.1.2 werkzeug=2.1.1 pillow scikit-image numpy opencv flask-restful=0.3.9
 ```
 
+## Image analysis workflow
+
+
 
 ## Usage
 
@@ -76,15 +81,27 @@ yarn start
 You should now find the app from browser by typing: http://localhost:3000/
 
 
-The web-page contains instruction how to fill the input fields. Additional information of the input fields can be found from [nextflow configuration file](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file), [SIMPLIcity metadata files](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) and  [SIMPLIcity tips and limitations](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-tips-and-limitations)
+The web-page contains instruction how to fill the input fields. To test the app with the testing data, provided in ~/SIMPLIcity/Data folder, follow the instructions below. Additional information of the input fields can be found from [nextflow configuration file](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#nextflow-configuration-file), [SIMPLIcity metadata files](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-metadata-files) and  [SIMPLIcity tips and limitations](https://github.com/ernohanninen/SIMPLIcity/blob/master/README.md#simplicity-tips-and-limitations)
+
+1. Submit the samples, note markers among samples needs to match:
 
 
 ![alt text](https://github.com/ernohanninen/SIMPLIcity/blob/master/Assets/fig1.png)
 
+
+2. Select processes to run. The data provided is acquired with Operetta CLS system, therefore Operetta should be selected as imaging platform. Run all the processes:
+
+
 ![alt text](https://github.com/ernohanninen/SIMPLIcity/blob/master/Assets/fig2.png)
+
+
+3. Submit settings for the chosen processes. Here images with LMX1A and TH image channels is used, threfore using LMX_TH model, with default parameters. Identify the cell types corresponding to the markers. Use threshold value NA to classify all segmented objects as cells. In pixel intensity measurements, let's compare TH_cells. In cell area measurements, the co-expression factor is initialized to 0.4 and in the example we are looking for LMX positive cells which are also TH positive:
+
 
 ![alt text](https://github.com/ernohanninen/SIMPLIcity/blob/master/Assets/fig3.png)
 
+
+4. Explore the results. The sample specific segmentation and pixel distributon results can be found using the drop-down menu
 ![alt text](https://github.com/ernohanninen/SIMPLIcity/blob/master/Assets/fig4.png)
 
 
@@ -107,10 +124,11 @@ nextflow run main.nf -c run/run_simplicity.config
 If pipeline is used with settings in the Nextflow config file, the results are stored in ~/SIMPLIcity/SIMPLIcity/output folder
 
 #### Nextflow configuration file
-Parameters to SIMPLIcity are specified in nextflow configuartion file. Some of the SIMPLI features are not tested in SIMPLIcity, therefore those features are not described in detail. More information of those processes, see the [documentation to run SIMPLI](https://github.com/ciccalab/SIMPLI/wiki/Run#simpli-parameters) 
+Parameters to SIMPLIcity are specified in nextflow configuartion file. Some of the SIMPLI features are not tested in SIMPLIcity, therefore those features are not described in detail. More information of those processes, see the [documentation to run SIMPLI](https://github.com/ciccalab/SIMPLI/wiki/Run#simpli-parameters) and [SIMPLI analysis page](https://github.com/ciccalab/SIMPLI/wiki/Analysis) 
 
 
-To fill the configuration file for SIMPLIcity use the provided [template](https://github.com/ernohanninen/SIMPLIcity/tree/master/SIMPLI/run/scripts/run_simplicity.config).
+
+To fill the nextflow configuration file for SIMPLIcity use the provided [template](https://github.com/ernohanninen/SIMPLIcity/blob/master/SIMPLIcity/run/run_simplicity.config).
 
 
 
@@ -238,7 +256,7 @@ File that contains the metadata for cell identification.  By default this file i
 #### SIMPLIcity tips and limitations
 These instructions concerns both web-app and command-line usage. Even though the web-app validates user input, it is not completely robust for user mistakes.
 
-### Tips
+##### Tips
 - The SIMPLIcity web app contains a image thersholding module, which can be used to test different thresholding algorithms.
 - The web app can throw an error if the user makes something unexpected, in those cases it is recommended to refresh the page. 
 - Do not use whitespaces in input. For example file named `graft3 no2.tiff` will lead to error.
@@ -246,9 +264,10 @@ These instructions concerns both web-app and command-line usage. Even though the
 - All samples within each experimental setup should contain the same markers.
 - SIMPLIcity supports only single channel images and the pipeline has been tested with samples containing 1-3 image channels.
 - The StarDist parameters for ChAT and LMX1A_TH model should be adjusted. For HuNu model we recommend using probability threshold 0.58 and overlap threshold 0.3. In the study for the LMX1A_TH model we used probability threshold 0.06 and overlap threshold 0.3.
+- The page should be refreshed by the user after navigating between pages with the navigation bar
 
 
-### Limitations
+##### Limitations
 - The web app doesn't contain all the features of SIMPLI. The clustering and spatial analysis of SIMPLI haven't been tested in the SIMPLIcity pipeline.
 - When default settings on submit sample page is unchecked, the input is not validated for the thresholding algorithm field.
 - The CellProfiler4 pipelines are not usable in SIMPLI. However when filling the configuration files, the settings for CellProfiler4 needs to be specified.
@@ -289,6 +308,9 @@ The images aqcuired with Leica microscope was saved in RGB format. Before model 
 3. Save the reformatted image.
 
 ## Model training
+SIMPLIcity comes with three pre-trained segmentation models hunu, chat, and lmx1a_th. These models can be found from ~/SIMPLIcity/SIMPLIcity/run/models
+
+
 To train deep-learning model images with their corresponding masks are required, this requires image annotation. Before annotation the images were manually cat to 512x512 pixel patches using Fiji crop function, select `Image` > `Crop`. 
 
 
@@ -362,6 +384,14 @@ In addition to using custom model names, we adjusted the following parameters:
 python3 transfer_learning.py
 ```
 
+### Linear regression
+To evaluate the model performance of LMX1A_TH-model linear regression was used between manual and SIMPLIcity counts.
+
+The linear regression script and the counts between SIMPLIcity and manual can be found from [StatisticalTests folder](https://github.com/ernohanninen/SIMPLIcity/tree/master/StatisticalTests)
+
+The script was executed in Rstudio. 
+
+
 
 ## Creating docker images
 The dependencies of SIMPLIcity's image analysis pipeline are managed in three different docker images, two of these created in the project. The one, that wasn't created is Ubuntu image, which contains Linux operating system. Two separate docker images for R and Python dependencies was created, using following workflow:
@@ -406,3 +436,4 @@ docker push ernohanninen/py_container
 ```
 Same procedure was executed to the r-container (the r-container was named r_container).
 SIMPLIcity pulls the images automatically from docker hub.
+
