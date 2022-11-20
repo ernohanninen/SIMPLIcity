@@ -166,16 +166,11 @@ workflow {
         else{
             annotated_cells = params.annotated_cell_data_file
         }
-        annotated_cells.subscribe { print "cells (printed from: main) : " + it }
-        channel.fromPath(params.cell_clustering_metadata).subscribe { print "metadata (printed from: main) : " + it }
         clustering_metadata = channel.fromPath(params.cell_clustering_metadata)
             .splitCsv(header:true)
             .map{row -> tuple(row.cell_type, row.clustering_markers, row.clustering_resolutions)}
-            //.filter{!it.contains("NA")}
-        clustering_metadata.subscribe { print "metadata (printed from: main) : " + it }
-        
+            .filter{!it.contains("NA")}
         cluster_cells(annotated_cells, clustering_metadata, params.sample_metadata_file)
-
     }
 
     coord_selecter_map = [
@@ -281,7 +276,7 @@ workflow {
             clustering_metadata = channel.fromPath(params.cell_clustering_metadata)
                 .splitCsv(header:true)
                 .map{row -> tuple(row.cell_type, row.clustering_markers, row.clustering_resolutions)}
-                //.filter{!it.contains("NA")}
+                .filter{!it.contains("NA")}
             visualize_cell_clusters(clustering_metadata, clustered_cell_file, params.sample_metadata_file)
         }
         if(!params.skip_thresholding_visualization){
