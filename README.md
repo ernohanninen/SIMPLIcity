@@ -278,7 +278,7 @@ These instructions concerns both web-app and command-line usage. Even though the
 - The `Cell_area_measurements.py` script, which measures cell area and detects co-expressing cells, uses `cv.boundingRect()` function to find cordinates of cell. `cv.boundingRect()` function draws approximate rectangle around object of interest. However cells are often circular. It is unknow if this function has negative impact to the analysis, therefore users should validate the results from the co-expression analysis. In addition the results of co-expression analysis is not validated in detail. The image, containing cells expressing multiple markers from where the area and amount of co-expressing cells is computed, is stored in the output folder. 
 - Images acquired with Operetta CLS system are not pre-processed, this leads to non-optimal segmentation result.
 - The result of `Cell_Intensity_plotter.py` script, which plots pixel intensity distribution between two groups, have not been validated in detail.
-
+- The pipeline has been tested with immunofluorescence images acquired with Operetta CLS system and brightfield images acquired with Leica DMI6000B microscope.
 
 ## Processing images before model training and SIMPLIcity
 
