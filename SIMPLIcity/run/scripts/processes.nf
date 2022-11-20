@@ -1,4 +1,4 @@
-//Source: https://github.com/ciccalab/SIMPLI/blob/master/scripts/Seurat_Runned.R
+//Source: https://github.com/ciccalab/SIMPLI/blob/master/scripts/processes.nf
 //Code is from SIMPLI github page
 //Updated by Erno Hänninen
 //Since 23 March 2022
