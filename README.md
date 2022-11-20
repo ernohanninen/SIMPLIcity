@@ -3,7 +3,7 @@
 ## Description
 SIMPLIcity is an image analysis tool built upon the comprehensive [SIMPLI](https://github.com/ciccalab/SIMPLI) pipeline. With the custom image pre-processing step, three pre-trained image segmentation models, two external image-analysis scripts, and user-interface SIMPLIcity overcomes the limitations found in the SIMPLI pipeline. SIMPLIcity contains three pre-trained StarDist models for the following markers HuNu, ChAT, and a comprehensive model covering both LMX and TH image channels. In addition, the pre-trained model 2D_versatile_fluo, provided by StarDist, is available in SIMPLIcity, and user's can provide their StarDist models. SIMPLIcity can be used both as a command-line tool and via a web-based user interface.
 
-SIMPLIcity pipeline contains image pre-processing, deep-learning image segmentation, cell type identification, pixel intensity distribution plotter for objects classified as cells, and cell-area measurements, which allows also co-expression analysis of two or three distinct markers. The clustering and spatial analysis implemented in SIMPLI, haven't been tested in SIMPLIcity nor implemented in the web app.
+SIMPLIcity pipeline contains the following steps image pre-processing, deep-learning image segmentation, cell type identification, pixel intensity distribution plotter for objects classified as cells, and cell-area measurements of segmented objects, which allows also co-expression analysis of two or three distinct markers. The clustering and spatial analysis implemented in SIMPLI, haven't been tested in SIMPLIcity nor implemented in the web app.
 
 ![alt text](https://github.com/ernohanninen/SIMPLIcity/blob/master/Assets/fig0.png)
 
