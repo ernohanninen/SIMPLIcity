@@ -1,0 +1,162 @@
+---
+title: "linear_regression.R"
+author: "Alrik Schörling"
+date: '2022-11-14'
+output: pdf_document
+---
+
+Set up
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, warnings = FALSE)
+
+knitr::opts_knit$set(root.dir = "/Users/al7743sc/Dropbox (Human Neural Develop)/Alrik Kirkeby PhD/Miscellaneous/Students/Erno 2022")
+```
+
+Install and load packages
+```{r}
+#install.packages("packman") #run if you don't have
+#pacman::p_install(dplyr, tidyverse, ggplot2, rstatix) #run if you don't have
+#pacman::p_load(dplyr, tidyverse, ggplot2, rstatix) #load packages 
+```
+
+Create useful themes
+```{r}
+basic_theme <-  theme_bw() + 
+  theme(panel.border = element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.5),
+        axis.ticks.length = unit(.2, "cm"), 
+        axis.text.x = element_text(color = "black", family = "sans", size = 12),
+        axis.text.y = element_text(color = "black", family = "sans", size = 12),
+        axis.title = element_text(size = 12), 
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 12),
+        strip.text.x = element_text(size = 12),
+        strip.text.y = element_text(size = 12), 
+        strip.background = element_rect(color = NA, fill = NA), 
+        plot.title = element_text(color = "black", family = "sans",  size = 12))
+
+theme_1 <- basic_theme + theme(axis.line = element_line(size = 0.5))
+
+theme_2 <- basic_theme + 
+  theme(axis.line = element_line(size = 0.5), 
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+
+theme_3 <- basic_theme + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust = 1), 
+        panel.border = element_rect(size = 1, fill = NA))
+
+theme_4 <- basic_theme + 
+  theme(panel.border = element_rect(size = 1, fill = NA))
+
+theme_5 <- basic_theme + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        panel.border = element_rect(size = 1, fill = NA))
+```
+
+Load data an convert to long format
+```{r}
+erno_corr_long <- read.csv("yz004nr if p1.csv", sep = ",") |>
+  select(-graft_no) |> 
+  mutate(image_id = seq(1:n())) |>
+  pivot_longer(LMX:harmony_th, values_to = "count", names_to = "marker") |>
+  mutate(marker = tolower(marker)) |> 
+  mutate(count_by = case_when(marker == "lmx" | marker == "th" ~ "manual",
+                              marker == "sc_lmx" | marker == "sc_th" ~ "simplicity", 
+                              marker == "harmony_lmx" | marker == "harmony_th" ~ "harmony")) |>
+  mutate(marker = gsub("sc_", "", marker), 
+         marker = gsub("harmony_", "", marker)) |>
+  mutate(marker = factor(marker)) |> 
+  mutate(count_by = factor(count_by)) |> 
+  drop_na() |>
+  arrange(count)
+
+#inspect the data
+head(erno_corr) 
+glimpse(erno_corr)
+```
+
+Inspect normality (requirment for parametric, linear correlation)
+```{r}
+erno_corr_long |> 
+  group_by(count_by) |>
+  shapiro_test(count)
+
+ggplot(erno_corr_long, aes(x = count)) + 
+  geom_histogram(aes(y =..density..), fill = "gray90") +
+  geom_density(aes(fill = count_by), size = 2, alpha = 0.5) + 
+  xlab("") + 
+  scale_x_continuous(limits = c(-200, 1700)) +
+  theme_1
+```
+
+Some have shapiro-wilk p<0.05 but the distributions are relatively normal. Proceed with parametric linear regression. Correlation is sometimes easier done in a wide data format, where the column corresponds to the previous catagorical data. Convert to wide format 
+```{r}
+erno_corr_wide <- erno_corr |> 
+  pivot_wider(values_from = "count", names_from = "count_by")
+
+head(erno_corr_wide) #inspect the data 
+```
+
+
+```{r}
+#corr manual ~ harmony 
+lm_h <- lm(erno_corr_wide$manual ~ erno_corr_wide$harmony, erno_corr_wide)
+glance(lm_h) #
+
+#corr manual ~ simplicity
+lm_s <- lm(erno_corr_wide$manual ~ erno_corr_wide$simplicity, erno_corr_wide)
+glance(lm_s)
+```
+Simplicity performs quite poorly based upon the r-squared. Let's plot the data to see what's up
+
+```{r}
+corr_plt <- function(data, x_var, y_var) {
+  ggplot(data, aes(x = {{x_var}}, y = {{y_var}})) + 
+    geom_point(shape = 21, size = 2) + 
+    geom_smooth(method = "lm", se = F) + 
+    facet_wrap(~marker) + 
+    theme_1
+  }
+
+corr_plt(erno_corr_wide, manual, harmony)
+corr_plt(erno_corr_wide, manual, simplicity)
+```
+
+It seems simplicity underestimates the number of cells when bigger than >500 in the manual count. Let's filter these out and see what happens. The Harmony has too few points to correlate imo
+
+```{r}
+erno_corr_wide_sel <- erno_corr_wide |> 
+  filter(manual < 400)
+```
+
+```{r}
+corr_plt(erno_corr_wide_sel, manual, harmony)
+corr_plt(erno_corr_wide_sel, manual, simplicity)
+```
+
+Looks quite a lot better! Let's look at the stats
+```{r}
+lm_s2 <- lm(erno_corr_wide_sel$manual ~ erno_corr_wide_sel$simplicity, erno_corr_wide_sel)
+glance(lm_s2)
+```
+
+Let's plot SIMPLIcity without facet_wrap
+```{r}
+corr_plt_alt <- function(data, x_var, y_var) {
+  ggplot(data, aes(x = {{x_var}}, y = {{y_var}})) + 
+    geom_smooth(method = "lm") + 
+    geom_point(aes(fill = marker), shape = 21, size = 2) + 
+    geom_hline(yintercept = c(100, 200, 300), linetype = 2, size = 0.2) +
+    geom_vline(xintercept = c(100, 200, 300), linetype = 2, size = 0.2) +
+    scale_y_continuous(limits = c(0, 400), exp = c(0,0)) + 
+    scale_x_continuous(limits = c(0, 400), exp = c(0,0)) + 
+    theme_1
+  }
+
+plt <- corr_plt_alt(erno_corr_wide_sel, manual, simplicity)
+
+plt
+ggsave("erno_corr_wide_sel.pdf", plt, height = 4, width = 5)
+```
