@@ -155,7 +155,7 @@ process collect_normalized_tiff_metadata {
 
     label 'small_memory'
     publishDir "$image_folder/Normalized", mode:'copy', overwrite: true
-    
+    container 'ubuntu'
     input:
         path(metadata_list)
     
@@ -760,7 +760,7 @@ process collect_homotypic_interactions {
 
     label 'small_memory'
     publishDir "$params.output_folder/Homotypic_interactions", mode:'copy', overwrite: true
-    
+    container 'ubuntu'
     input:
         path(homotypic_interactions_list)
 
@@ -829,7 +829,7 @@ process get_heterotypic_distances {
 process collect_heterotypic_distances {
     label 'small_memory'
     publishDir "$params.output_folder/Heterotypic_interactions", mode:'copy', overwrite: true
-    
+    container 'ubuntu'
     input:
         path(heterotypic_interactions_list)
 
